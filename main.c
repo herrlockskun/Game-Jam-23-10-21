@@ -86,7 +86,12 @@ for (int j=0;j<20;++j)
 
 	SDL_Texture** tableau_minerai =malloc(10*sizeof(SDL_Texture *));
 	tableau_minerai[0]=load_texture_from_image("lune.jpg", renderer );
+	tableau_minerai[1]= load_texture_from_image("horizontale.png", renderer );
+	tableau_minerai[2]= load_texture_from_image("virage_2.png", renderer );
+	
 	dessin_arriere_plan(carte, renderer, tableau_minerai);
+	dessin_texture(1,0,1,tableau_minerai,renderer,2);
+	dessin_texture(0,0,2,tableau_minerai,renderer,6);
     SDL_Event event;
     while (running)
     {
