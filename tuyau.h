@@ -36,6 +36,12 @@ enum TuyauOrientation
     horizontal
 };
 
+typedef struct listeTuyau
+{
+    tuyau_t *liste[TAILLE_MAP];
+    int taille;
+} listeTuyau_t;
+
 // A virer apres merge avec nathan
 typedef struct door
 {
@@ -73,27 +79,29 @@ typedef struct tuyau
 typedef struct map
 {
     int vierge[TAILLE_MAP][TAILLE_MAP];
-    batiment_io_t **batiment[TAILLE_MAP][TAILLE_MAP];
-    tuyau_t **tuyau[TAILLE_MAP][TAILLE_MAP];
+    batiment_io_t *batiment[TAILLE_MAP][TAILLE_MAP];
+    tuyau_t *tuyau[TAILLE_MAP][TAILLE_MAP];
 
 } map_t;
 
 int mainTuyau();
 
+int initListeTuyau(listeTuyau_t *l_tuyau);
+
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP]);
 void print_case_console(enum CaseMap caseMap);
 
-int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris);
+int constructionTuyau(listeTuyau_t *l_tuyau, map_t *map, int x_souris, int y_souris);
 
 int placeTuyau(tuyau_t *tuyau, map_t *map, int x_case, int y_case);
 
 int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_case_prec, int y_case_prec);
 
-int initTuyau(tuyau_t *tuyau);
+int initTuyau(listeTuyau_t *l_tuyau);
 
 int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map);
 
 // A virer quand merge avec nathan
-int deleteDoor(batiment_io_t * batiment , tuyau_t * tube);
+int deleteDoor(batiment_io_t *batiment, tuyau_t *tube);
 
 #endif
