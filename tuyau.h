@@ -1,9 +1,9 @@
 #ifndef TUYAU_H
 #define TUYAU_H
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -59,10 +59,12 @@ typedef struct map
     
 }map_t;
 
+int mainTuyau();
+void print_tuyau(tuyau_t * tuyau);
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP]);
 void print_case_console(enum CaseMap caseMap);
-
-
-
+int check_entree(tuyau_t * tuyau);
+int decale(tuyau_t *tuyau);
+int insertion(tuyau_t * tuyau, enum Ressource);
 
 #endif
