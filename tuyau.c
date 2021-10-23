@@ -54,11 +54,38 @@ void print_case_console(enum CaseMap caseMap) // Faire un switch case
 }
 
 /***************************************************/
-/*      */
+/*                                                 */
+/*  Construction tuyau                             */
+/* 1-selection batiment                            */
+/* 2-placer case adjacente batiment                */
+/* 3-placer case adjacente case prec               */
+/* 4-selectionner batiment adjacent derniere case  */
+/*                                                 */
 /***************************************************/
-int creationTuyau(tuyau_t *tuyau)
+int constructionTuyau(tuyau_t *tuyau, map_t *map, int x,int y)
 {
     int erreur = 1;
+
+    int x_case, y_case;
+    x_case = x, y_case = y; // Appeler fct pour recup indice a partir de pixel
+
+    if (tuyau->taille == 0) // Pas de tuyau unitaire cree
+    {
+        if(tuyau->entree == NULL) // Clic sur usine car debut tuyau
+        if (map->batiment_io_t[y_case][x_case] != NULL)
+        {   // Lien du tuyau d'entre avec la sortie
+            //tuyau->entree = map->batiment_io_t[y_case][x_case] 
+        }
+        else
+        {
+            erreur = 2; // Pas un batiment selectione pour debut du tuyau
+        }
+    }
+    else
+    {
+        
+    }
+
 }
 
 /***************************************************/

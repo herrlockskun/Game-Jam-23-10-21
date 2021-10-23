@@ -9,7 +9,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "enum.h"
 
 #define TAILLE_MAP 5
 #define NB_MAX_CASE (TAILLE_MAP*TAILLE_MAP)
@@ -19,6 +18,7 @@ enum CaseMap
 {
     sol,
     montagne,
+    usine,
     tuyau
 };
 
@@ -40,8 +40,8 @@ enum TuyauOrientation
 
 typedef struct tuyau
 {
-    //usine_t * entree;
-    //usine_t * sortie;
+    //batiment_io_t * entree;
+    //batiment_io_t * sortie;
     int taille;
     
     enum Ressource contenu[NB_MAX_CASE];
@@ -51,7 +51,13 @@ typedef struct tuyau
 
 }tuyau_t;
 
-
+typedef struct map
+{
+    int vierge[TAILLE_MAP][TAILLE_MAP];
+    //batiment_io_t * batiment[TAILLE_MAP][TAILLE_MAP];
+    tuyau_t* tuyau[TAILLE_MAP][TAILLE_MAP];
+    
+}map_t;
 
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP]);
 void print_case_console(enum CaseMap caseMap);
