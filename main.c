@@ -62,7 +62,7 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         /* on peut aussi utiliser SDL_Log() */
     }
-    SDL_SetWindowTitle(window, "Des morts et des bulles");
+    SDL_SetWindowTitle(window, "Lunaire");
     SDL_Renderer *renderer;
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); /*  SDL_RENDERER_SOFTWARE */
