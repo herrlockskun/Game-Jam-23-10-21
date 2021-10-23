@@ -43,6 +43,8 @@ typedef struct tuyau
     //batiment_io_t * entree;
     //batiment_io_t * sortie;
     int taille;
+    int level;
+    int nb_passage;
     
     enum Ressource contenu[NB_MAX_CASE];
     int  lien_contenu_case[NB_MAX_CASE][2];

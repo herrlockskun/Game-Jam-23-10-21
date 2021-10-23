@@ -3,7 +3,7 @@
 int mainTuyau()
 {
     // Init map
-    /*enum CaseMap map[TAILLE_MAP][TAILLE_MAP];
+    enum CaseMap map[TAILLE_MAP][TAILLE_MAP];
 
     // Full sol
     for (int i = 0; i < TAILLE_MAP; i++)
@@ -13,15 +13,17 @@ int mainTuyau()
             map[i][j] = sol;
         }
     }
-    map[0][1] = tuyau;
-    map[0][2] = tuyau;
-    map[0][3] = tuyau;
-    map[1][3] = tuyau;*/
+    map[2][1] = tuyau;
+    map[2][2] = tuyau;
+    map[2][3] = tuyau;
+    map[3][3] = tuyau;
 
     tuyau_t *tuyau = (tuyau_t *)malloc(sizeof(tuyau_t));
     if (tuyau)
     {
         tuyau->taille = 5;
+        tuyau->level = 1;
+        tuyau->nb_passage = 2;
         for (int i = 0; i < tuyau->taille; i++)
         {
             tuyau->contenu[i] = aucuneRessource;
@@ -30,19 +32,46 @@ int mainTuyau()
         print_tuyau(tuyau);
 
         insertion(tuyau, titane);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
 
         print_tuyau(tuyau);
 
         insertion(tuyau, fer);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        print_tuyau(tuyau);
         insertion(tuyau, eau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        print_tuyau(tuyau);
         insertion(tuyau, titane);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        print_tuyau(tuyau);
         insertion(tuyau, fer);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        print_tuyau(tuyau);
         insertion(tuyau, fer);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
+        decale(tuyau);
 
         print_tuyau(tuyau);
     }
-
-    //print_map_console(map);
+    print_map_console(map);
 
     return 0;
 }
@@ -101,16 +130,19 @@ int decale(tuyau_t *tuyau)
         ajout_stock(tuyau->contenu[tuyau->taille-1]);
         tuyau->contenu[tuyau->taille-1] = aucuneRessource;
     }*/
-
-    for (int i = tuyau->taille - 2; i >= 0; i--)
+    if (tuyau->nb_passage%(5 - tuyau->level) == 0)
     {
-        if (tuyau->contenu[i + 1] == aucuneRessource)
+        for (int i = tuyau->taille - 2; i >= 0; i--)
         {
-            tuyau->contenu[i + 1] = tuyau->contenu[i];
-            tuyau->contenu[i] = aucuneRessource;
+            if (tuyau->contenu[i + 1] == aucuneRessource)
+            {
+                tuyau->contenu[i + 1] = tuyau->contenu[i];
+                tuyau->contenu[i] = aucuneRessource;
+            }
         }
     }
-
+    tuyau->nb_passage ++;
+    printf("%d\n",tuyau->nb_passage);
     erreur = 1;
 
     return erreur;
@@ -119,8 +151,7 @@ int decale(tuyau_t *tuyau)
 int insertion(tuyau_t *tuyau, enum Ressource materiau)
 {
     int erreur = 0;
-
-    erreur = decale(tuyau);
+    printf("Je veux insérer : %d\n", materiau);
 
     if (check_entree(tuyau))
     {
