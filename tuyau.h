@@ -33,8 +33,18 @@ enum Ressource
 enum TuyauOrientation
 {
     aucuneOrientation,
-    vertical,
-    horizontal
+    bas,
+    bas_gauche,
+    bas_droite,
+    haut,
+    haut_gauche,
+    haut_droite,
+    gauche,
+    gauche_haut,
+    gauche_bas,
+    droite,
+    droite_haut,
+    droite_bas
 };
 
 
@@ -65,8 +75,9 @@ int mainTuyau();
 void print_tuyau(tuyau_t * tuyau);
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP]);
 void print_case_console(enum CaseMap caseMap);
-int check_entree(tuyau_t * tuyau);
-int decale(tuyau_t *tuyau);
-int insertion(tuyau_t * tuyau, enum Ressource);
+int orientation_tuyau(tuyau_t *tuyau);
+int check_entree_tuyau(tuyau_t * tuyau);
+int decale_dans_tuyau(tuyau_t *tuyau);
+int insertion_dans_tuyau(tuyau_t * tuyau, enum Ressource);
 
 #endif
