@@ -41,7 +41,7 @@ void dessin_arriere_plan(int carte[20][20], SDL_Renderer* renderer, SDL_Texture*
 	{
 		for (int	i=0;i<20;++i)
 		{
-			minerais(i,j,0,tableau_minerai,renderer);
+			minerais(i,j,carte[i][j],tableau_minerai,renderer);
 		}
 	}
 }
