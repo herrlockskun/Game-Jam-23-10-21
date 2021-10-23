@@ -1,9 +1,23 @@
 #include "tuyau.h"
 
+typedef struct listeTuyau
+{
+    tuyau_t *liste[TAILLE_MAP];
+    int taille;
+} listeTuyau_t;
+
 int mainTuyau()
 {
 
     return 0;
+}
+
+/***************************************************/
+/* Init de liste de tuyau                          */
+/***************************************************/
+int initListeTuyau()
+{
+    int erreur = 1;
 }
 
 /***************************************************/
@@ -65,8 +79,8 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
     int x_case_souris, y_case_souris;
     //x_case_souris = x_souris, y_case_souris = y_souris; // Appeler fct pour recup indice a partir de pixel
 
-    x_case_souris = x_souris / 45;  // 45 -> taille d'une case en pixel
-    y_case_souris = y_souris / 45;  // Ils onts pas fait un define ces sauvages
+    x_case_souris = x_souris / 45; // 45 -> taille d'une case en pixel
+    y_case_souris = y_souris / 45; // Ils onts pas fait un define ces sauvages
 
     if (tuyau->taille == 0) // Pas de tuyau unitaire cree
     {
@@ -221,6 +235,8 @@ int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map)
     // Supprime la connexion avec batiment si elle existe
     //erreur = deleteDoor(tuyau->entree, tuyau);
     //erreur = deleteDoor(tuyau->sortie, tuyau);
+
+    tuyau_t *tmp = tuyau;
 
     free(tuyau); // Libere le tuyau
 
