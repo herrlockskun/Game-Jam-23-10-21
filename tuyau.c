@@ -2,23 +2,6 @@
 
 int mainTuyau()
 {
-    // Init map
-    enum CaseMap map[TAILLE_MAP][TAILLE_MAP];
-
-    // Full sol
-    for (int i = 0; i < TAILLE_MAP; i++)
-    {
-        for (int j = 0; j < TAILLE_MAP; j++)
-        {
-            map[i][j] = sol;
-        }
-    }
-    map[0][1] = tuyau;
-    map[0][2] = tuyau;
-    map[0][3] = tuyau;
-    map[1][3] = tuyau;
-
-    print_map_console(map);
 
     return 0;
 }
@@ -26,6 +9,7 @@ int mainTuyau()
 /***************************************************/
 /* print la map dans la console                    */
 /***************************************************/
+/*
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP])
 {
     for (int i = 0; i < TAILLE_MAP; i++)
@@ -38,10 +22,12 @@ void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP])
     }
     printf("\033[0m\n");
 }
+*/
 
 /***************************************************/
 /* print une case de la couleur correspondante     */
 /***************************************************/
+/*
 void print_case_console(enum CaseMap caseMap) // Faire un switch case
 {
     // Reset \033[0m\n
@@ -52,53 +38,89 @@ void print_case_console(enum CaseMap caseMap) // Faire un switch case
     else if (caseMap == tuyau)
         printf("\033[0;41m ");
 }
+*/
 
-/***************************************************/
-/*                                                 */
-/*  Construction tuyau                             */
-/* 1-selection batiment                            */
-/* 2-placer case adjacente batiment                */
-/* 3-placer case adjacente case prec               */
-/* 4-selectionner batiment adjacent derniere case  */
-/*                                                 */
-/*  erreur : 0 ok / 2 etape 1 pas ok               */
-/*                                                 */
-/***************************************************/
-int constructionTuyau(tuyau_t *tuyau, map_t *map, int x, int y)
+/****************************************************/
+/*                                                  */
+/*  Construction tuyau                              */
+/* 1-selection batiment                             */
+/* 2-placer case adjacente batiment                 */
+/* 3-placer case adjacente case prec                */
+/* 4-selectionner batiment adjacent derniere case   */
+/*                                                  */
+/* erreur :                                         */
+/*         -1 - Pas de bat select en debut chemin   */
+/*          0 - Tuyau bien place                    */
+/*          1 - Case pas voisinnage                 */
+/*          2 - Case souris -> pas sol              */
+/*          3 - Case souris -> tuyau                */
+/*          4 - Case souris -> batiment             */
+/*          5 - Batiment entree bien selectione     */
+/*          6 - Batiment sortie bien selectione     */
+/****************************************************/
+int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
 {
-    int erreur = 1;
+    int erreur = 1; // Pas de voisinage
 
-    int x_case, y_case;
-    x_case = x, y_case = y; // Appeler fct pour recup indice a partir de pixel
+    int x_case_souris, y_case_souris;
+    x_case_souris = x_souris, y_case_souris = y_souris; // Appeler fct pour recup indice a partir de pixel
 
     if (tuyau->taille == 0) // Pas de tuyau unitaire cree
     {
         if (tuyau->entree == NULL) // Clic sur usine car debut tuyau
         {
-            if (map->batiment_io_t[y_case][x_case] != NULL)
+            if (map->batiment[y_case_souris][x_case_souris] != NULL)
             { // Lien du tuyau d'entre avec la sortie
-                tuyau->entree = map->batiment_io_t[y_case][x_case]
+                tuyau->entree = map->batiment[y_case_souris][x_case_souris];
+                erreur = 5; // Batiment bien selectionne
             }
             else
             {
-                erreur = 2; // Pas un batiment selectione pour debut du tuyau
+                erreur = -1; // Pas un batiment selectione pour debut du tuyau
             }
         }
         else // Batiment entree deja selectionne
-        {
-
+        {    // Doit placer un tuyau
+            // Check case adjacente
+            erreur = checkCaseAdjacente(map, x_case_souris, y_case_souris, tuyau->entree->pos_x, tuyau->entree->pos_y);
+            // Place le tuyau adjacent au batiment
+            erreur = placeTuyau(tuyau, x_case_souris, y_case_souris, erreur);
         }
     }
     else
     {
+        // Check case adjacente
+        erreur = checkCaseAdjacente(map, x_case_souris, y_case_souris, tuyau->entree->pos_x, tuyau->entree->pos_y);
+        if (erreur == 4) // Case souris -> batiment
+        {                // Selectionne le dernier batiment
+            tuyau->sortie = map->batiment[y_case_souris][x_case_souris];
+            erreur = 6; // 6 - Batiment sortie bien selectione
+        }
+        else
+        {
+            // Place le tuyau adjacent au tuyau precedent
+            erreur = placeTuyau(tuyau, x_case_souris, y_case_souris);
+        }
     }
 }
 
+/****************************************************/
+/* Place une unite de tuyau sur la case d'la souris */
+/****************************************************/
+int placeTuyau(tuyau_t *tuyau, int x_case, int y_case)
+{
+    tuyau->taille++;
+    tuyau->lien_contenu_case[tuyau->taille][0] = x_case_souris;
+    tuyau->lien_contenu_case[tuyau->taille][1] = y_case_souris;
+
+    return 0;
+}
 
 /****************************************************/
 /* Check si case de la souris                       */
 /* est adjacente a la case precedente pose          */
 /* erreur :                                         */
+/*          0 - Case souris -> sol                  */
 /*          1 - Case pas voisinnage                 */
 /*          2 - Case souris -> pas sol              */
 /*          3 - Case souris -> tuyau                */
@@ -106,7 +128,7 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x, int y)
 /****************************************************/
 int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_case_prec, int y_case_prec)
 {
-    erreur = 1; // Case pas voisinnage
+    int erreur = 1; // Case pas voisinnage
 
     int voisinage = abs(x_case_souris - x_case_prec) + abs(y_case_souris - y_case_prec);
 
@@ -118,7 +140,7 @@ int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_c
             {
                 if (map->vierge[y_case_souris][x_case_souris] == sol) // Pas de montagne -> sol
                 {
-                    erreur = 0;
+                    erreur = 0; // Case souris -> sol
                 }
                 else
                 {
@@ -140,6 +162,7 @@ int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_c
 
 /***************************************************/
 /* malloc du tuyau et initialisation a 0           */
+/* erreur : 0 tuyau vierge ok / 1 erreur malloc    */
 /***************************************************/
 int initTuyau(tuyau_t *tuyau)
 {
@@ -155,7 +178,7 @@ int initTuyau(tuyau_t *tuyau)
         // Initialise le contenu vide et aucun tuyau unitaire
         for (int i = 0; i < NB_MAX_CASE; i++)
         {
-            tuyau->contenu = aucuneRessource;
+            tuyau->contenu[i] = aucuneRessource;
 
             tuyau->lien_contenu_case[i][0] = -1;
             tuyau->lien_contenu_case[i][1] = -1;

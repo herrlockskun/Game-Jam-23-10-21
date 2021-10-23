@@ -40,6 +40,26 @@ enum TuyauOrientation
 };
 
 
+typedef struct door
+{
+    int * tube;
+    int type;
+}door_t;
+
+typedef struct batiment_io
+{
+    int pos_x;
+    int pos_y;
+
+    int * stock_entree;
+    int * stock_sortie;
+
+    door_t d_top;
+    door_t d_bottom;
+    door_t d_left;
+    door_t d_right;
+}batiment_io_t;
+
 typedef struct tuyau
 {
     batiment_io_t * entree;
@@ -61,9 +81,12 @@ typedef struct map
     
 }map_t;
 
+int mainTuyau();
+
 void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP]);
 void print_case_console(enum CaseMap caseMap);
 
+int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris);
 
 int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_case_prec, int y_case_prec);
 
