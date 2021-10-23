@@ -1,3 +1,4 @@
+/*main.c*/
 #include "main.h"
 
 int main()
@@ -48,10 +49,11 @@ int main()
 
 */
     SDL_Window *window;
-    int width = 900;
-    int height = 600;
+    int width = 1200;
+    int height =900;
     int taille = 0;
 	int running=1;
+	
 
     window = SDL_CreateWindow("SDL2 Programme 0.1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               width, height,
@@ -70,8 +72,22 @@ int main()
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
+
+int carte[20][20];
+
+for (int j=0;j<20;++j)
+{
+	for (int i=0;i<20;++i)
+	{
+		carte[i][j]=0;
+	}
+}
+
+
+	SDL_Texture** tableau_minerai =malloc(10*sizeof(SDL_Texture *));
+	tableau_minerai[0]=load_texture_from_image("lune.jpg", renderer );
+	dessin_arriere_plan(carte, renderer, tableau_minerai);
     SDL_Event event;
-    SDL_RenderPresent(renderer);
     while (running)
     {
         while (SDL_PollEvent(&event))
@@ -100,6 +116,7 @@ int main()
         }
         
 
+    	SDL_RenderPresent(renderer);
         SDL_Delay(17);
     }
     SDL_DestroyRenderer(renderer);
