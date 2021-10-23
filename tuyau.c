@@ -42,7 +42,7 @@ void print_map_console(enum CaseMap map[TAILLE_MAP][TAILLE_MAP])
 /***************************************************/
 /* print une case de la couleur correspondante     */
 /***************************************************/
-void print_case_console(enum CaseMap caseMap)   // Faire un switch case
+void print_case_console(enum CaseMap caseMap) // Faire un switch case
 {
     // Reset \033[0m\n
     if (caseMap == sol)
@@ -53,3 +53,39 @@ void print_case_console(enum CaseMap caseMap)   // Faire un switch case
         printf("\033[0;41m ");
 }
 
+/***************************************************/
+/*      */
+/***************************************************/
+int creationTuyau(tuyau_t *tuyau)
+{
+    int erreur = 1;
+}
+
+/***************************************************/
+/* malloc du tuyau et initialisation a 0           */
+/***************************************************/
+int initTuyau(tuyau_t *tuyau)
+{
+    int erreur = 1;
+
+    tuyau = (tuyau_t *)malloc(sizeof(tuyau_t *));
+
+    if (tuyau != NULL)
+    {
+        int erreur = 0; // malloc reussi
+        tuyau->taille = 0;
+
+        // Initialise le contenu vide et aucun tuyau unitaire
+        for (int i = 0; i < NB_MAX_CASE; i++)
+        {
+            tuyau->contenu = aucuneRessource;
+
+            tuyau->lien_contenu_case[i][0] = -1;
+            tuyau->lien_contenu_case[i][1] = -1;
+
+            tuyau->orientation[i] = aucuneOrientation;
+        }
+    }
+
+    return erreur;
+}
