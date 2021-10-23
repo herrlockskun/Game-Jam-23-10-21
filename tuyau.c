@@ -84,7 +84,7 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
             // Check case adjacente
             erreur = checkCaseAdjacente(map, x_case_souris, y_case_souris, tuyau->entree->pos_x, tuyau->entree->pos_y);
             // Place le tuyau adjacent au batiment
-            erreur = placeTuyau(tuyau, x_case_souris, y_case_souris, erreur);
+            erreur = placeTuyau(tuyau, map, x_case_souris, y_case_souris);
         }
     }
     else
@@ -99,19 +99,22 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
         else
         {
             // Place le tuyau adjacent au tuyau precedent
-            erreur = placeTuyau(tuyau, x_case_souris, y_case_souris);
+            erreur = placeTuyau(tuyau, map, x_case_souris, y_case_souris);
         }
     }
+    return erreur;
 }
 
 /****************************************************/
 /* Place une unite de tuyau sur la case d'la souris */
+/* Place le pointeur vers le tuyau                  */
 /****************************************************/
-int placeTuyau(tuyau_t *tuyau, int x_case, int y_case)
+int placeTuyau(tuyau_t *tuyau, map_t *map, int x_case, int y_case)
 {
     tuyau->taille++;
-    tuyau->lien_contenu_case[tuyau->taille][0] = x_case_souris;
-    tuyau->lien_contenu_case[tuyau->taille][1] = y_case_souris;
+    tuyau->lien_contenu_case[tuyau->taille][0] = x_case;
+    tuyau->lien_contenu_case[tuyau->taille][1] = y_case;
+    map->tuyau[y_case][x_case] = &tuyau; // Normalement adr case cell
 
     return 0;
 }
@@ -186,6 +189,37 @@ int initTuyau(tuyau_t *tuyau)
             tuyau->orientation[i] = aucuneOrientation;
         }
     }
+
+    return erreur;
+}
+
+/***************************************************/
+/*                                                 */
+/*  erreur : 0 - porte supprime                    */
+/*           1 - porte pas trouve sur le batiment  */
+/*           2 - batiment pas lie                  */
+/*                                                 */
+/***************************************************/
+int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map)
+{
+    int erreur = 1;
+
+    int x_unite, y_unite;
+
+    for (int i = 0; i < tuyau->taille; ++i)
+    {
+        // Recuperation coordonnees du dernier tuyau
+        x_unite = tuyau->lien_contenu_case[i][0];
+        y_unite = tuyau->lien_contenu_case[i][1];
+
+        map->tuyau[y_unite][x_unite] = NULL; // Reset de la case dans map
+    }
+
+    // Supprime la connexion avec batiment si elle existe
+    //erreur = deleteDoor(tuyau->entree, tuyau);
+    //erreur = deleteDoor(tuyau->sortie, tuyau);
+
+    free(tuyau); // Libere le tuyau
 
     return erreur;
 }
