@@ -51,7 +51,6 @@ int main()
     SDL_Window *window;
     int width = 1200;
     int height = 900;
-    int taille = 0;
     int running = 1;
 
     window = SDL_CreateWindow("ça c'est lunaire dit donc !", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -103,8 +102,10 @@ int main()
     dessin_texture(1, 0, 1, tableau_minerai, renderer, 2);
     dessin_texture(0, 0, 2, tableau_minerai, renderer, 6);
     SDL_Event event;
-    int sourisx,sourisy;
-    int flag=0;
+    int tick=0;
+    int affiche=0;
+    clock_t begin,end;
+    begin=clock();
 
     while (running)
     {
@@ -127,8 +128,10 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                printf("Appui :%d %d\n", event.button.x, event.button.y);
-                flag=1;
+                if(event.button.x > 900)
+                {
+                    eventmenu(event.button.x,event.button.y);
+                }
                 break;
             case SDL_QUIT:
                 running = 0;
@@ -136,19 +139,24 @@ int main()
             }
             break;
         }
-        mainmenu(renderer,10,font1);
-        /*if (flag==0)
+        end=clock();
+        if (((end-begin)*1000/CLOCKS_PER_SEC)>100)   //1 tick = 100ms
         {
-            SDL_GetMouseState(&sourisx, &sourisy);
-            printf("La souris est : %d %d\n",sourisx,sourisy);
+            tick=1;
+            begin=clock();
         }
-        else
+        if (tick)
         {
-            flag=0;
-        }*/
-
-        SDL_RenderPresent(renderer);
-        SDL_Delay(17);
+            affiche=1;
+            tick=0;
+        }  
+        affichemenu(renderer,begin,font1);
+        if (affiche)
+        {
+            SDL_RenderPresent(renderer);
+        }
+        SDL_Delay(10);
+        
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

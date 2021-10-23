@@ -3,6 +3,8 @@
 
 #include "background.h"
 #include "menu.h"
+#include <SDL2/SDL_mixer.h>
+#include <time.h>
 
 int main();
 /*#include "couleurs.h"
