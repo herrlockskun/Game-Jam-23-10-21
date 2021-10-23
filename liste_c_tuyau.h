@@ -9,6 +9,7 @@
 struct cellule
 {
   tuyau_t * val;
+  struct cellule * prec;
   struct cellule * suiv;
 };
 typedef struct cellule cell;
@@ -30,8 +31,11 @@ void afficheListe(liste l);
 void adjCel(cell** prevCel,cell* nouv);
 
 void supprCel(cell** prevCel);
+void supprCelBis(cell *cel);
 
 cell** rechPrec(cell ** head, tuyau_t* v);
 
 cell* creeCel();
+
+
 #endif

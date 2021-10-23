@@ -63,7 +63,10 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
     int erreur = 1; // Pas de voisinage
 
     int x_case_souris, y_case_souris;
-    x_case_souris = x_souris, y_case_souris = y_souris; // Appeler fct pour recup indice a partir de pixel
+    //x_case_souris = x_souris, y_case_souris = y_souris; // Appeler fct pour recup indice a partir de pixel
+
+    x_case_souris = x_souris / 45;  // 45 -> taille d'une case en pixel
+    y_case_souris = y_souris / 45;  // Ils onts pas fait un define ces sauvages
 
     if (tuyau->taille == 0) // Pas de tuyau unitaire cree
     {
@@ -71,7 +74,7 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
         {
             if (map->batiment[y_case_souris][x_case_souris] != NULL)
             { // Lien du tuyau d'entre avec la sortie
-                tuyau->entree = map->batiment[y_case_souris][x_case_souris];
+                tuyau->entree = *map->batiment[y_case_souris][x_case_souris];
                 erreur = 5; // Batiment bien selectionne
             }
             else
@@ -93,7 +96,7 @@ int constructionTuyau(tuyau_t *tuyau, map_t *map, int x_souris, int y_souris)
         erreur = checkCaseAdjacente(map, x_case_souris, y_case_souris, tuyau->entree->pos_x, tuyau->entree->pos_y);
         if (erreur == 4) // Case souris -> batiment
         {                // Selectionne le dernier batiment
-            tuyau->sortie = map->batiment[y_case_souris][x_case_souris];
+            tuyau->sortie = *map->batiment[y_case_souris][x_case_souris];
             erreur = 6; // 6 - Batiment sortie bien selectione
         }
         else

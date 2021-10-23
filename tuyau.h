@@ -73,8 +73,8 @@ typedef struct tuyau
 typedef struct map
 {
     int vierge[TAILLE_MAP][TAILLE_MAP];
-    batiment_io_t *batiment[TAILLE_MAP][TAILLE_MAP];
-    tuyau_t *tuyau[TAILLE_MAP][TAILLE_MAP];
+    batiment_io_t **batiment[TAILLE_MAP][TAILLE_MAP];
+    tuyau_t **tuyau[TAILLE_MAP][TAILLE_MAP];
 
 } map_t;
 

@@ -1,7 +1,7 @@
 #include "liste_c_tuyau.h"
 
 /*------------------------------------------------------------*/
-/*Cycle de vie d'une liste simplement chainee                 */
+/* Cycle de vie d'une liste simplement chainee                */
 /*                                                            */
 /*------------------------------------------------------------*/
 
@@ -19,10 +19,14 @@ cell *creeCel()
   nouv = (cell *)malloc(sizeof(cell));
 
   if (nouv == NULL)
+  {
     printf("Erreur malloc : creeCel\n");
+  }
   else
+  {
+    nouv->prec = NULL;
     nouv->suiv = NULL;
-
+  }
   return nouv;
 }
 
@@ -36,6 +40,7 @@ void insereTete(liste *l, tuyau_t *tuyau)
   else
   {
     nouv->val = tuyau;
+    nouv->prec = NULL;
     nouv->suiv = l->tete;
     l->tete = nouv;
   }
@@ -65,7 +70,7 @@ void afficheListe(liste l)
   printf("\n");
 }
 
-cell **rechPrec(cell **head, tuyau_t* v)
+cell **rechPrec(cell **head, tuyau_t *v)
 {
   cell **prevCel = head;
   cell *currCel = *prevCel;
@@ -92,3 +97,15 @@ void supprCel(cell **prevCel)
     free(suppr);
   }
 }
+
+void supprCelBis(cell *cel)
+{
+  if (cel != NULL)
+  {
+
+    cel->prec->suiv = cel->suiv;
+    cel->suiv->prec = cel->prec;
+    free(cel);
+  }
+}
+
