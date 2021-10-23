@@ -71,6 +71,19 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
 
+    if (TTF_Init() != 0)
+    {
+        fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError()); 
+    }
+
+    TTF_Font *font1=NULL;
+
+    font1 = TTF_OpenFont("arial.ttf", 60);
+    if (font1==NULL)
+    {
+        fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
+    }
+
     int carte[20][20];
 
     for (int j = 0; j < 20; ++j)
@@ -123,7 +136,7 @@ int main()
             }
             break;
         }
-        mainmenu(renderer,10);
+        mainmenu(renderer,10,font1);
         /*if (flag==0)
         {
             SDL_GetMouseState(&sourisx, &sourisy);
@@ -139,6 +152,8 @@ int main()
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_CloseFont(font1);
+    TTF_Quit();
     SDL_Quit();
     return 0;
 }

@@ -10,7 +10,7 @@ void dessinmenu(SDL_Renderer *renderer, TTF_Font *font1, int money, SDL_Texture 
     destination.x = OFFSETX;
     destination.y = 0;
     destination.w = 300;
-    destination.h = 600; //PENSER A CHANGER !!!!!!!!!!!
+    destination.h = 900; //PENSER A CHANGER !!!!!!!!!!!
     SDL_RenderCopy(renderer, bg[0], NULL, &destination);
 
     SDL_Color couleur = {9, 106, 9, 255};
@@ -43,21 +43,17 @@ void dessinmenu(SDL_Renderer *renderer, TTF_Font *font1, int money, SDL_Texture 
     destination.y = OFFSETY + 450;
     for (int k = 0; k < 3; k++)
     {
-        destination.x = 10 + 100 * k;
+        destination.x = OFFSETX+10 + 100 * k;
         SDL_RenderCopy(renderer, bg[1], &source, &destination);
     }
 }
 
-void mainmenu(SDL_Renderer *renderer,int money)
+void mainmenu(SDL_Renderer *renderer,int money, TTF_Font* font1)
 {
-    TTF_Font *font1;
-
-    font1 = TTF_OpenFont("arial.ttf", 60);
     SDL_Texture *bg[2];
     bg[0]=load_texture_from_image("cosmos.jpeg", renderer);
     bg[1]=load_texture_from_image("bouton.png", renderer);
     dessinmenu(renderer, font1,money, bg);
-    TTF_CloseFont(font1);
-    TTF_Quit();
+
 
 }

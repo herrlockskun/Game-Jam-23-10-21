@@ -28,7 +28,7 @@ void dessinmenu(SDL_Renderer *renderer, TTF_Font* font1,int offsetx,int offsety,
     destination.x=offsetx;
     destination.y=0;
     destination.w=300;
-    destination.h=600; //PENSER A CHANGER !!!!!!!!!!!
+    destination.h=900; //PENSER A CHANGER !!!!!!!!!!!
     SDL_RenderCopy(renderer,bg[0],NULL,&destination);
 
     SDL_Color couleur  = {9, 106, 9, 255};      
@@ -61,7 +61,7 @@ void dessinmenu(SDL_Renderer *renderer, TTF_Font* font1,int offsetx,int offsety,
     destination.y=offsety+450;
     for (int k=0;k<3;k++)
     {
-        destination.x=10+100*k;
+        destination.x=offsetx+10+100*k;
         SDL_RenderCopy(renderer,bg[1],&source,&destination);
     }
 }
@@ -74,8 +74,8 @@ int main()
         return EXIT_FAILURE; 
     }
     SDL_Window   * window;
-    int width = 300;
-    int height = 600;
+    int width = 1200;
+    int height = 900;
 
     window = SDL_CreateWindow("woaw trop beau", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
             width, height, 
@@ -135,7 +135,7 @@ int main()
     chargertexture(renderer,bg);
     for (int k=0;k<150;k++)
     {
-        dessinmenu(renderer,font1,0,0, k*k,bg);
+        dessinmenu(renderer,font1,900,0, k*k,bg);
         SDL_RenderPresent(renderer);
         SDL_Delay(50);
     }
