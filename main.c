@@ -2,6 +2,7 @@
 
 int main()
 {
+/*
    if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -14,7 +15,7 @@ int main()
         SDL_Quit();
         return -1; 
     }   
-
+*/
 /*    Mix_Music* music = Mix_LoadMUS("musique-dascenseur.mp3"); // Charge notre musique
 
     if (music == NULL)
@@ -47,6 +48,7 @@ int main()
     Mix_PlayMusic(music, -1); // Joue notre musique   
 
 */
+/*
     SDL_Window *window;
     int width = 900;
     int height = 600;
@@ -60,12 +62,12 @@ int main()
     if (window == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
-        /* on peut aussi utiliser SDL_Log() */
+        
     }
     SDL_SetWindowTitle(window, "Lunaire");
     SDL_Renderer *renderer;
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); /*  SDL_RENDERER_SOFTWARE */
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); 
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -105,5 +107,8 @@ int main()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+*/
+
+    mainTuyau();
     return 0;
 }

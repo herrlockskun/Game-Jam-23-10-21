@@ -8,6 +8,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "tuyau.h"
+
 int main();
 /*#include "couleurs.h"
 #include "perso.h"
