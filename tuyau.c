@@ -53,7 +53,15 @@ int mainTuyau()
             }
         }
     }
+        printf("batiment entree x %d\n", l->liste[0]->entree->pos_x);
+    printf("batiment entree y %d\n", l->liste[0]->entree->pos_y);
 
+    printf("tuyau unite x %d\n", l->liste[0]->lien_contenu_case[0][0]);
+    printf("tuyau unite y %d\n", l->liste[0]->lien_contenu_case[0][1]);
+    printf("tuyau orientation %d\n", l->liste[0]->orientation[0]);
+
+    printf("batiment sortie x %d\n", l->liste[0]->sortie->pos_x);
+    printf("batiment sortie y %d\n", l->liste[0]->sortie->pos_y);
     return 0;
 }
 
