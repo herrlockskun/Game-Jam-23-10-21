@@ -4,7 +4,7 @@ int mainTuyau()
 {
     int erreur;
     listeTuyau_t *l = NULL;
-    erreur = initListeTuyau(l);
+    erreur = initListeTuyau(&l);
 
     map_t *map = NULL;
 
@@ -12,7 +12,7 @@ int mainTuyau()
     {
 
         //Clic construction
-        erreur = initTuyau(l);
+        erreur = initTuyau(&l);
 
         if (erreur == 0)
         {
@@ -78,13 +78,13 @@ int mainTuyau()
 /* erreur : 0 - Allocation reussi                  */
 /*          1 - Allocation echec                   */
 /***************************************************/
-int initListeTuyau(listeTuyau_t *l_tuyau)
+int initListeTuyau(listeTuyau_t **l_tuyau)
 {
     int erreur = 1; // Erreur
-    l_tuyau = (listeTuyau_t *)malloc(sizeof(listeTuyau_t *));
+    *l_tuyau = (listeTuyau_t *)malloc(sizeof(listeTuyau_t *));
     if (l_tuyau != NULL)
     {
-        l_tuyau->taille = 0;
+        (*l_tuyau)->taille = 0;
         erreur = 0; // Allocation reussi
     }
     return erreur;
@@ -225,7 +225,7 @@ int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_c
 /* et ajout dans la liste                          */
 /* erreur : 0 tuyau vierge ok / 1 erreur malloc    */
 /***************************************************/
-int initTuyau(listeTuyau_t *l_tuyau)
+int initTuyau(listeTuyau_t **l_tuyau)
 {
     int erreur = 1;
 
@@ -246,8 +246,8 @@ int initTuyau(listeTuyau_t *l_tuyau)
             tuyau->orientation[i] = aucuneOrientation;
         }
         // Ajout du tuyau vierge cree dans tab tuyau
-        l_tuyau->liste[l_tuyau->taille] = tuyau; /**** ATTENTION ****/
-        l_tuyau++;
+       (*l_tuyau)->liste[(*l_tuyau)->taille] = tuyau; /**** ATTENTION ****/
+       (*l_tuyau)->taille++;
     }
 
     return erreur;
