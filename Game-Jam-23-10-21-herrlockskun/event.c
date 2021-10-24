@@ -27,12 +27,15 @@ void eventsec(int posx,int posy, int *status)
     }
 }
 
-void mainevent(int posx, int posy, int *status, int *money)
+void mainevent(int posx, int posy, int *status, int *money, batiment_io_t * carte_bat[20][20])
 {
     int cout[10];
     int n;
     switch (*status)
     {
+	case 0:
+		eventsec(posx,posy,status);
+		break;
     case 1:
         if (posx < 900)
         {
@@ -61,7 +64,8 @@ void mainevent(int posx, int posy, int *status, int *money)
         cout[6]=6000;
         cout[7]=11500;
         cout[8]=20000;
-        n = ((posx - 900) / 80) * ((posy - 280) / 140);
+        n = ((posx - 900) / 80) + (3*(posy - 280) / 140);
+		if (posx>900){
         if (n >= 0 && n < 9)
         {
             if (*money > cout[n])
@@ -70,6 +74,7 @@ void mainevent(int posx, int posy, int *status, int *money)
                 *status = 10 + n;
             }
         }
+		}
         else
         {
             eventsec(posx, posy, status);
@@ -85,7 +90,8 @@ void mainevent(int posx, int posy, int *status, int *money)
         cout[6]=15000;
         cout[7]=22000;
         cout[8]=45000;
-        n = ((posx - 900) / 80) * ((posy - 280) / 140);
+        n = ((posx - 900) / 80) + (3*(posy - 280) / 140);
+		if (posx>900){
         if (n >= 0 && n < 9)
         {
             if (*money > cout[n])
@@ -94,6 +100,7 @@ void mainevent(int posx, int posy, int *status, int *money)
                 *status = 20 + n;
             }
         }
+		}
         else
         {
             eventsec(posx, posy, status);
@@ -114,7 +121,7 @@ void mainevent(int posx, int posy, int *status, int *money)
         if (posx < 900)
         {
             *status = 0;
-            //appeler construire usine
+            newUsine_brique(carte_bat, posx/45, posy/45);
         }
         else
         {
