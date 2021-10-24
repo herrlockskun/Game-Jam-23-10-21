@@ -3,6 +3,7 @@
 
 #include "background.h"
 #include "menu.h"
+#include "event.h"
 #include <SDL2/SDL_mixer.h>
 #include <time.h>
 

@@ -107,8 +107,10 @@ int main()
     clock_t begin,end;
     begin=clock();
     int status=0;
+    int money=10;
     //liste_tuyau_t *ltuyau
     //initListeTuyau(&ltuyau)
+    //faire la map...
 
     while (running)
     {
@@ -131,10 +133,8 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if(event.button.x > 900)
-                {
-                    eventmenu(event.button.x,event.button.y,&status);
-                }
+                mainevent(event.button.x,event.button.y,&status,&money);
+                affiche=1;
                 break;
             case SDL_QUIT:
                 running = 0;
@@ -153,9 +153,10 @@ int main()
             affiche=1;
             tick=0;
         }  
-        affichemenu(renderer,begin,font1,status);
         if (affiche)
         {
+            affichemenu(renderer,begin,font1,status);
+            affiche=0;
             SDL_RenderPresent(renderer);
         }
         SDL_Delay(10);

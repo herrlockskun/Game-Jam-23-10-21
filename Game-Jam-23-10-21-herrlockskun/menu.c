@@ -217,21 +217,3 @@ void affichemenu(SDL_Renderer *renderer,int money, TTF_Font* font1, int status)
 }
 
 
-void eventmenu(int posx, int posy, int *status)
-{
-    if (posy>750 && posy<830)
-    {
-        if (posx>910 && posx<990)
-        {
-            *status=1;
-        }
-        if (posx>1010 && posx<1090)
-        {
-            *status=2;
-        }
-        if (posx>1110 && posx<1190)
-        {
-            *status=3;
-        }
-    }
-}
