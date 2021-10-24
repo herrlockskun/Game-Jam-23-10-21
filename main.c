@@ -89,7 +89,8 @@ int main()
     listeTuyau_t *l_tuyau;
 
     initListeTuyau(&l_tuyau);
-    printf("ici\n");
+    mainTuyau();
+/*
     initTuyau(&l_tuyau);
 
     l_tuyau->liste[l_tuyau->taille - 1]->lien_contenu_case[0][0] = 10;
@@ -98,8 +99,9 @@ int main()
     l_tuyau->liste[l_tuyau->taille - 1]->taille = 1;
 
     dessin_tuyau(l_tuyau, tableau_minerai, renderer);
-
-    /*	dessin_texture(0,0,r_numero_texture(1),tableau_minerai,renderer,r_angle(1), r_miroir(1));
+*/
+    /*
+   	dessin_texture(0,0,r_numero_texture(1),tableau_minerai,renderer,r_angle(1), r_miroir(1));
 	dessin_texture(0,1,r_numero_texture(3),tableau_minerai,renderer,r_angle(3), r_miroir(3));
 	dessin_texture(1,1,r_numero_texture(11),tableau_minerai,renderer,r_angle(11), r_miroir(11));
 	dessin_texture(1,0,r_numero_texture(6),tableau_minerai,renderer,r_angle(6), r_miroir(6));

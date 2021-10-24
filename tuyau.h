@@ -93,8 +93,8 @@ typedef struct tuyau
 typedef struct map
 {
     int vierge[TAILLE_MAP][TAILLE_MAP];
-    batiment_io_t *batiment[TAILLE_MAP][TAILLE_MAP];
-    tuyau_t *tuyau[TAILLE_MAP][TAILLE_MAP];
+    batiment_io_t **batiment[TAILLE_MAP][TAILLE_MAP];
+    tuyau_t **tuyau[TAILLE_MAP][TAILLE_MAP];
 
 } map_t;
 
@@ -102,8 +102,8 @@ int mainTuyau();
 
 int initListeTuyau(listeTuyau_t **l_tuyau);
 
-int constructionTuyau(listeTuyau_t *l_tuyau, map_t *map, int x_souris, int y_souris);
-int placeTuyau(tuyau_t *tuyau, map_t *map, int x_case, int y_case);
+int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int y_souris);
+int placeTuyau(tuyau_t **p_tuyau, map_t **p_map, int x_case, int y_case);
 int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_case_prec, int y_case_prec);
 int initTuyau(listeTuyau_t **l_tuyau);
 
