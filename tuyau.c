@@ -113,13 +113,13 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
     x_case_souris = x_souris / 45; // 45 -> taille d'une case en pixel
     y_case_souris = y_souris / 45; // Ils onts pas fait un define ces sauvages
 
-//    printf("x : %d,  y : %d \n", x_case_souris, y_case_souris);
+    //    printf("x : %d,  y : %d \n", x_case_souris, y_case_souris);
 
     if (tuyau->taille == 0)
     {
         if (tuyau->entree == NULL) // Clic sur usine car debut tuyau
         {
-            
+
             if ((*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
             { // Lien du tuyau d'entre avec la sortie
                 tuyau->entree = (*p_map)->batiment[y_case_souris][x_case_souris];
@@ -138,6 +138,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
             // Place le tuyau adjacent au batiment
             erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
+            //tuyau->cote_entree = ..............
         }
     }
     else // Taille != 0
@@ -152,6 +153,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             erreur = 6; // 6 - Batiment sortie bien selectione
             // Chemin de tuyau connecte
             orientation_tuyau(tuyau);
+            //tuyau->sortie = .............
         }
         else
         {

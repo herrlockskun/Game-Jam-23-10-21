@@ -60,7 +60,9 @@ typedef struct listeTuyau
 typedef struct tuyau
 {
     batiment_io_t *entree;
+    int cote_entree;
     batiment_io_t *sortie;
+    int cote_sortie;
     int taille;
 
     int level;
@@ -90,6 +92,6 @@ int decale_dans_tuyau(tuyau_t *tuyau);
 int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource);
 
 // A virer quand merge avec nathan
-int deleteDoor(batiment_io_t *batiment, tuyau_t *tube);
+//int deleteDoor(batiment_io_t *batiment, tuyau_t *tube);
 
 #endif
