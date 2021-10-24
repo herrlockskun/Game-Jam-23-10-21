@@ -1,4 +1,3 @@
-
 #ifndef TUYAU_H
 #define TUYAU_H
 
@@ -12,8 +11,10 @@
 
 #include <math.h>
 
-#define TAILLE_MAP 5
-#define NB_MAX_CASE (TAILLE_MAP * TAILLE_MAP)
+#define TAILLE_MAP 20
+#define NB_MAX_CASE (20 * 20)
+
+#define NB_MAX_TUYAU 10
 
 enum CaseMap
 {
@@ -48,7 +49,7 @@ enum TuyauOrientation
 
 typedef struct listeTuyau
 {
-    struct tuyau *liste[TAILLE_MAP];
+    struct tuyau* liste[NB_MAX_TUYAU];
     int taille;
 } listeTuyau_t;
 
@@ -99,12 +100,12 @@ typedef struct map
 
 int mainTuyau();
 
-int initListeTuyau(listeTuyau_t *l_tuyau);
+int initListeTuyau(listeTuyau_t **l_tuyau);
 
 int constructionTuyau(listeTuyau_t *l_tuyau, map_t *map, int x_souris, int y_souris);
 int placeTuyau(tuyau_t *tuyau, map_t *map, int x_case, int y_case);
 int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_case_prec, int y_case_prec);
-int initTuyau(listeTuyau_t *l_tuyau);
+int initTuyau(listeTuyau_t **l_tuyau);
 
 int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map);
 
