@@ -21,3 +21,4 @@ all: $(OBJ)
 	@$(CC) -c $< $(CFLAGS)
 clean:
 	rm *.o
+

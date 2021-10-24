@@ -96,8 +96,6 @@ int initListeTuyau(listeTuyau_t **l_tuyau)
         (*l_tuyau)->taille = 0;
         erreur = 0; // Allocation reussi
     }
-    
-    *l_tuyau = l_tuyau;
     return erreur;
 }
 
@@ -356,6 +354,8 @@ int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource materiau)
     // Supprime la connexion avec batiment si elle existe
     //erreur = deleteDoor(tuyau->entree, tuyau);
     //erreur = deleteDoor(tuyau->sortie, tuyau);
+
+    
 
     return erreur;
 }
