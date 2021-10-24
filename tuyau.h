@@ -99,7 +99,7 @@ typedef struct map
 
 int mainTuyau();
 
-int initListeTuyau(listeTuyau_t *l_tuyau);
+int initListeTuyau(listeTuyau_t **l_tuyau);
 
 int constructionTuyau(listeTuyau_t *l_tuyau, map_t *map, int x_souris, int y_souris);
 int placeTuyau(tuyau_t *tuyau, map_t *map, int x_case, int y_case);

@@ -4,9 +4,18 @@ int mainTuyau()
 {
     int erreur;
     listeTuyau_t *l = NULL;
-    erreur = initListeTuyau(l);
+    erreur = initListeTuyau(&l);
 
     map_t *map = NULL;
+    map = malloc(sizeof(map_t));
+    for (int i = 0; i < TAILLE_MAP; ++i)
+    {
+        for (int j = 0; j < TAILLE_MAP; j++)
+        {
+            map->batiment[i][j] = NULL;
+            map->tuyau[i][j] = NULL;
+        }
+    }
 
     if (erreur == 0)
     {
@@ -78,15 +87,17 @@ int mainTuyau()
 /* erreur : 0 - Allocation reussi                  */
 /*          1 - Allocation echec                   */
 /***************************************************/
-int initListeTuyau(listeTuyau_t *l_tuyau)
+int initListeTuyau(listeTuyau_t **p_l_tuyau)
 {
     int erreur = 1; // Erreur
-    l_tuyau = (listeTuyau_t *)malloc(sizeof(listeTuyau_t *));
+    listeTuyau_t *l_tuyau = (listeTuyau_t *)malloc(sizeof(listeTuyau_t *));
     if (l_tuyau != NULL)
     {
         l_tuyau->taille = 0;
         erreur = 0; // Allocation reussi
     }
+    
+    *p_l_tuyau = l_tuyau;
     return erreur;
 }
 
@@ -247,7 +258,7 @@ int initTuyau(listeTuyau_t *l_tuyau)
         }
         // Ajout du tuyau vierge cree dans tab tuyau
         l_tuyau->liste[l_tuyau->taille] = tuyau; /**** ATTENTION ****/
-        l_tuyau++;
+        l_tuyau->taille++;
     }
 
     return erreur;
@@ -345,8 +356,6 @@ int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource materiau)
     // Supprime la connexion avec batiment si elle existe
     //erreur = deleteDoor(tuyau->entree, tuyau);
     //erreur = deleteDoor(tuyau->sortie, tuyau);
-
-    
 
     return erreur;
 }
