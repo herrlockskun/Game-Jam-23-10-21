@@ -1,20 +1,23 @@
-CC= gcc
-OPT  = -c -Wextra -Wall -g
-SDL2 = -lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
+CC = gcc #Déclaration de variables
+DEBUG = yes
+SRC = $(wildcard *.c)#Génération de la liste des fichiers sources
+EXE = prog
+OBJ = $(SRC:.c=.o)
 
-prog : main.o tuyau.o 
-	$(CC) main.o tuyau.o $(SDL2) -o prog 
+ifeq ($(DEBUG), yes) #Condtions
+$(info "Debug activé")
+CFLAGS = -g -Wall -Wextra
+else
+CFLAGS = -Wall -Wextra
+endif
 
-main.o : main.c main.h tuyau.h 
-	$(CC) $(OPT) main.c
+LIB=-lm -lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lSDL2_net
 
-tuyau.o : tuyau.c tuyau.h 
-	$(CC) $(OPT) tuyau.c
+all: $(OBJ)
+	@echo "Compilation"
+	@$(CC) -o $(EXE) $^ $(LIB)
 
-
-
-clear :
-	rm  *.o 
-	
-propre :
-	rm prog
+%.o:%.c
+	@$(CC) -c $< $(CFLAGS)
+clean:
+	rm *.o

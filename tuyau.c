@@ -97,7 +97,7 @@ int initListeTuyau(listeTuyau_t **l_tuyau)
         erreur = 0; // Allocation reussi
     }
     
-    *p_l_tuyau = l_tuyau;
+    *l_tuyau = l_tuyau;
     return erreur;
 }
 
