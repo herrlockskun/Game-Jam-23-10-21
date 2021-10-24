@@ -6,9 +6,6 @@
 #include <SDL2/SDL_mixer.h>
 #include <time.h>
 
-#include "map.h"
-#include "tuyau.h"
-
 int main();
 /*#include "couleurs.h"
 #include "perso.h"

@@ -23,8 +23,8 @@ int mainTuyau()
     bat2->pos_x = 2;
     bat2->pos_y = 0;
 
-    map->batiment[0][0] = &bat1;
-    map->batiment[0][2] = &bat2;
+    map->batiment[0][0] = bat1;
+    map->batiment[0][2] = bat2;
 
     if (erreur == 0)
     {
@@ -53,7 +53,6 @@ int mainTuyau()
             }
         }
     }
-
 
     return 0;
 }
@@ -114,15 +113,16 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
     x_case_souris = x_souris / 45; // 45 -> taille d'une case en pixel
     y_case_souris = y_souris / 45; // Ils onts pas fait un define ces sauvages
 
-    printf("x : %d,  y : %d \n", x_case_souris, y_case_souris);
+//    printf("x : %d,  y : %d \n", x_case_souris, y_case_souris);
 
     if (tuyau->taille == 0)
     {
         if (tuyau->entree == NULL) // Clic sur usine car debut tuyau
         {
-            if (*(*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
+            
+            if ((*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
             { // Lien du tuyau d'entre avec la sortie
-                tuyau->entree = *((*p_map)->batiment[y_case_souris][x_case_souris]);
+                tuyau->entree = (*p_map)->batiment[y_case_souris][x_case_souris];
                 erreur = 5; // Batiment bien selectionne
             }
             else
@@ -148,7 +148,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
         erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
         if (erreur == 4) // Case souris -> batiment
         {                // Selectionne le dernier batiment
-            tuyau->sortie = *((*p_map)->batiment[y_case_souris][x_case_souris]);
+            tuyau->sortie = (*p_map)->batiment[y_case_souris][x_case_souris];
             erreur = 6; // 6 - Batiment sortie bien selectione
             // Chemin de tuyau connecte
             orientation_tuyau(tuyau);
