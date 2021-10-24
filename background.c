@@ -1,7 +1,5 @@
 /*bacground.c*/
 /*23 octobre 2021*/
-#include <SDL2/SDL_image.h>        
-#include <SDL2/SDL.h>
 #include "background.h"
 
 /*gcc fade.c -o fade -Wall -Wextra -g -lSDL2 -lSDL2_image */
@@ -72,6 +70,23 @@ void dessin_arriere_plan(int carte[20][20], SDL_Renderer* renderer, SDL_Texture*
 	}
 }
 
-/*void dessin_tuyau(tuyau_t * tuyau, SDL_Texture** tableau_minerai, SDL_Renderer* rendeder)
+void dessin_tuyau(listeTuyau_t * tuyau_l, SDL_Texture** tableau_minerai, SDL_Renderer* renderer)
 {
-	}*/
+	int nb_tuyau=tuyau_l->taille;
+	int num_tuyau, x, y, angle, numero_texture, taille;
+	SDL_RendererFlip miroir;
+	for (int j=0;j<nb_tuyau;j++)
+	{
+		taille=tuyau_l->liste[j]->taille;	
+	for (int i=0;i<taille;i++)
+	{
+		x=tuyau_l->liste[i]->lien_contenu_case[0][0];
+		y=tuyau_l->liste[i]->lien_contenu_case[0][0];
+		num_tuyau=tuyau_l->liste[i]->orientation[0];
+		angle=r_angle(num_tuyau);
+		numero_texture=r_numero_texture(num_tuyau);
+		miroir=r_miroir(num_tuyau);
+		dessin_texture(x,y,numero_texture,tableau_minerai,renderer,angle,miroir);
+	}
+	}
+}
