@@ -106,6 +106,9 @@ int main()
     int affiche=0;
     clock_t begin,end;
     begin=clock();
+    int status=0;
+    //liste_tuyau_t *ltuyau
+    //initListeTuyau(&ltuyau)
 
     while (running)
     {
@@ -130,7 +133,7 @@ int main()
             case SDL_MOUSEBUTTONDOWN:
                 if(event.button.x > 900)
                 {
-                    eventmenu(event.button.x,event.button.y);
+                    eventmenu(event.button.x,event.button.y,&status);
                 }
                 break;
             case SDL_QUIT:
@@ -150,7 +153,7 @@ int main()
             affiche=1;
             tick=0;
         }  
-        affichemenu(renderer,begin,font1);
+        affichemenu(renderer,begin,font1,status);
         if (affiche)
         {
             SDL_RenderPresent(renderer);
