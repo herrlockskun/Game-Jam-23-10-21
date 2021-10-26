@@ -1,22 +1,11 @@
 #ifndef TUYAU_H
 #define TUYAU_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 
 #include <math.h>
 #include "map.h"
 
 
-#define TAILLE_MAP 20
-#define NB_MAX_CASE (20 * 20)
-
-#define NB_MAX_TUYAU 10
 
 enum CaseMap
 {

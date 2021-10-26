@@ -1,13 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "tuyau.h"
-
-#define TAILLE_MAP 20
-#define NB_MAX_CASE (20 * 20)
-
-#define NB_MAX_TUYAU 10
-
+#include "const.h"
 
 // A virer apres merge avec nathan
 typedef struct door

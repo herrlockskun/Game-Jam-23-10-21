@@ -46,8 +46,8 @@ int main()
     Mix_PlayMusic(music, -1); // Joue notre musique   
 */
     SDL_Window *window;
-    int width = 1200;
-    int height = 900;
+    int width = LARGEUR_FENETRE;
+    int height = HAUTEUR_FENETRE;
     int running = 1;
 
     window = SDL_CreateWindow("ça c'est lunaire dit donc !", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,

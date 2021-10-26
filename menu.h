@@ -1,14 +1,12 @@
 #ifndef menu_gard
 #define menu_gard
 
-#define OFFSETX 900
-#define OFFSETY 300
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include <SDL2/SDL_ttf.h>
+// #dsefine OFFSETX 900
+// #define OFFSETY 300
+
 #include "background.h"
+#include "const.h"
 
 void dessinfond(SDL_Renderer *renderer, SDL_Texture *bg[2], int centre);
 

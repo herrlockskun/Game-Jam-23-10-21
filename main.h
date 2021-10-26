@@ -1,13 +1,8 @@
 #ifndef main_gard
 #define main_gard
 
-#include "background.h"
-#include "menu.h"
-#include <SDL2/SDL_mixer.h>
-#include <time.h>
+#include "const.h"
 
-#include "map.h"
-#include "tuyau.h"
 
 int main();
 /*#include "couleurs.h"
