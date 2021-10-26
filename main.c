@@ -129,10 +129,12 @@ int main()
     map->batiment[0][2] = bat2;
     /*  code en dur a l'arache */
 
-
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
     initTuyau(&l_tuyau); // a appeler quand on rentre dans mode edition
+
+    running = 0;
+    mainTuyau();
 
     while (running)
     {
@@ -180,7 +182,7 @@ int main()
             tick = 0;
         }
         affichemenu(renderer, begin, font1, status);
-        dessin_tuyau(l_tuyau,tableau_minerai,renderer);
+        dessin_tuyau(l_tuyau, tableau_minerai, renderer);
 
         if (affiche)
         {

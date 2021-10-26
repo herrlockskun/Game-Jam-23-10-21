@@ -38,29 +38,29 @@ int mainTuyau()
 
             if (erreur == 5)
             {
-                printf("1 bat bien select\n");
+                printf("1-bat bien select\n");
                 erreur = constructionTuyau(&l, &map, 48, 5);
                 if (erreur == 0)
                 {
-                    printf("tuyau bien place\n");
+                    printf("2-tuyau bien place\n");
                     erreur = constructionTuyau(&l, &map, 95, 5);
                     if (erreur == 6)
                     {
-                        printf("bat fin bien select");
-                        printf("yoyo\n");
+                        printf("3-bat fin bien select");
                     }
                 }
             }
         }
     }
-        printf("batiment entree x %d\n", l->liste[0]->entree->pos_x);
+    printf("batiment entree x %d\n", l->liste[0]->entree->pos_x);
     printf("batiment entree y %d\n", l->liste[0]->entree->pos_y);
 
+    printf("\nadresse du tuyau %p\n", l->liste[0]);
     printf("tuyau unite x %d\n", l->liste[0]->lien_contenu_case[0][0]);
     printf("tuyau unite y %d\n", l->liste[0]->lien_contenu_case[0][1]);
     printf("tuyau orientation %d\n", l->liste[0]->orientation[0]);
 
-    printf("batiment sortie x %d\n", l->liste[0]->sortie->pos_x);
+    printf("\nbatiment sortie x %d\n", l->liste[0]->sortie->pos_x);
     printf("batiment sortie y %d\n", l->liste[0]->sortie->pos_y);
     return 0;
 }
@@ -152,8 +152,8 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
     else // Taille != 0
     {
         // Check case adjacente
-        x_case_prec = tuyau->lien_contenu_case[tuyau->taille][0];
-        y_case_prec = tuyau->lien_contenu_case[tuyau->taille][1];
+        x_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][0];
+        y_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][1];
         erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
         if (erreur == 4) // Case souris -> batiment
         {                // Selectionne le dernier batiment
@@ -162,6 +162,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             // Chemin de tuyau connecte
             orientation_tuyau(tuyau);
             //tuyau->sortie = .............
+            tuyau->level = 1; // Tuyau ok -> level 1
         }
         else
         {
@@ -178,10 +179,10 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
 /****************************************************/
 int placeTuyau(tuyau_t **p_tuyau, map_t **p_map, int x_case, int y_case)
 {
-    (*p_tuyau)->taille++;
     (*p_tuyau)->lien_contenu_case[(*p_tuyau)->taille][0] = x_case;
     (*p_tuyau)->lien_contenu_case[(*p_tuyau)->taille][1] = y_case;
     (*p_map)->tuyau[y_case][x_case] = p_tuyau; // Normalement adr de struct tuyau
+    (*p_tuyau)->taille++;
 
     return 0;
 }
@@ -245,6 +246,9 @@ int initTuyau(listeTuyau_t **l_tuyau)
     {
         erreur = 0;
         tuyau->taille = 0;
+        tuyau->level = 0; // level = 0 quand tuyau pas encore ok
+        tuyau->cote_entree = -1;
+        tuyau->cote_sortie = -1;
 
         tuyau->entree = NULL;
         tuyau->sortie = NULL;
