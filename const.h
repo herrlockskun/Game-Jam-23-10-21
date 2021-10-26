@@ -2,14 +2,17 @@
 #define CONST_H
 
 /*** PATH ***/
-#define BOUTON_CONSTRUCTION_TUYAU
-#define BOUTON_CONSTRUCTION_USINE
+#define PATH_BOUTON_CONSTRUCTION_TUYAU "./images/bouton.png"
+#define PATH_BOUTON_CONSTRUCTION_USINE "./images/bouton.png"
 
-#define BACKGROUND_MENU
+#define PATH_BACKGROUND_MENU "./images/cosmos.jpeg"
 
-#define TUYAU_HORIZONTAL
-#define TUYAU_VERTICAL
-#define TUYAU_VIRAGE
+#define PATH_BACKGROUND "./images/lune.jpg"
+#define PATH_TUYAU_HORIZONTAL "./images/horizontale.png"
+#define PATH_TUYAU_VERTICAL 
+#define PATH_TUYAU_VIRAGE "./images/virage_2.png"
+
+#define PATH_FONT "./font/arial.ttf"
 
 /*** Librairies ***/ 
 #include <stdio.h>
@@ -48,3 +51,5 @@
 #include "map.h"
 
 #endif
+
+

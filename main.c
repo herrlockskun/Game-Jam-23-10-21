@@ -3,52 +3,19 @@
 
 int main()
 {
+    int running = 1;
 
+    /*** Initialisation SDL ***/
     if (SDL_Init(SDL_INIT_VIDEO) == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
-    // Initialisation de SDL_Mixer
-    if (Mix_OpenAudio(96000, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) < 0)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Erreur initialisation SDL_mixer : %s", Mix_GetError());
-        SDL_Quit();
-        return -1;
-    }
 
-    /*    Mix_Music* music = Mix_LoadMUS("musique-dascenseur.mp3"); // Charge notre musique
-    if (music == NULL)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Erreur chargement de la musique : %s", Mix_GetError());
-        Mix_CloseAudio();
-        SDL_Quit();
-        return -1; 
-    }   
-    
-    Mix_Music* music_vie = Mix_LoadMUS("vie.mp3"); // Charge notre musique
-    if (music == NULL)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Erreur chargement de la musique : %s", Mix_GetError());
-        Mix_CloseAudio();
-        SDL_Quit();
-        return -1; 
-    }   
-   
-    Mix_Music* music_mort = Mix_LoadMUS("mort.mp3"); // Charge notre musique
-    if (music == NULL)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Erreur chargement de la musique : %s", Mix_GetError());
-        Mix_CloseAudio();
-        SDL_Quit();
-        return -1;
-    }
-    Mix_PlayMusic(music, -1); // Joue notre musique   
-*/
+    /*** Initialisation fenetre ***/
     SDL_Window *window;
     int width = LARGEUR_FENETRE;
     int height = HAUTEUR_FENETRE;
-    int running = 1;
 
     window = SDL_CreateWindow("ça c'est lunaire dit donc !", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               width, height,
@@ -59,13 +26,18 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
         /* on peut aussi utiliser SDL_Log() */
     }
-    SDL_Renderer *renderer;
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED); /*  SDL_RENDERER_SOFTWARE */
+    /*** Initialisation renderer ***/
+    SDL_Renderer *renderer;
+    renderer = SDL_CreateRenderer(window, -1,
+                                  SDL_RENDERER_ACCELERATED);
+
     if (renderer == 0)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
+
+    /*** Initialisation TTF et font ***/
 
     if (TTF_Init() != 0)
     {
@@ -74,7 +46,7 @@ int main()
 
     TTF_Font *font1 = NULL;
 
-    font1 = TTF_OpenFont("arial.ttf", 60);
+    font1 = TTF_OpenFont(PATH_FONT, 60);
     if (font1 == NULL)
     {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -91,15 +63,10 @@ int main()
     }
 
     SDL_Texture **tableau_minerai = malloc(10 * sizeof(SDL_Texture *));
-    tableau_minerai[0] = load_texture_from_image("lune.jpg", renderer);
-    tableau_minerai[1] = load_texture_from_image("horizontale.png", renderer);
-    tableau_minerai[2] = load_texture_from_image("virage_2.png", renderer);
+    tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
+    tableau_minerai[1] = load_texture_from_image(PATH_BOUTON_CONSTRUCTION_TUYAU, renderer);
+    tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_HORIZONTAL, renderer);
 
-    /*
-    dessin_arriere_plan(carte, renderer, tableau_minerai);
-    dessin_texture(1, 0, 1, tableau_minerai, renderer, 2);
-    dessin_texture(0, 0, 2, tableau_minerai, renderer, 6);
-*/
     SDL_Event event;
     int tick = 0;
     int affiche = 0;
@@ -131,10 +98,6 @@ int main()
 
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
-    initTuyau(&l_tuyau); // a appeler quand on rentre dans mode edition
-
-    running = 0;
-    mainTuyau();
 
     while (running)
     {
@@ -183,6 +146,7 @@ int main()
         }
         affichemenu(renderer, begin, font1, status);
         dessin_tuyau(l_tuyau, tableau_minerai, renderer);
+        dessin_arriere_plan(carte, renderer, tableau_minerai);
 
         if (affiche)
         {
