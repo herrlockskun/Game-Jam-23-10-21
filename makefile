@@ -22,5 +22,5 @@ all: $(OBJ)
 	
 
 clean:
-	rm -r ./target/*.o
+	rm *.o
 
