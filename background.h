@@ -4,6 +4,7 @@
 /*23 octobre 2021*/
 
 #include "const.h"
+#include "map.h"
 
 SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Renderer *renderer);
 void dessin_texture(int x, int y, int numero_minerai, SDL_Texture **tableau_minerai, SDL_Renderer *renderer, int, SDL_RendererFlip);

@@ -18,14 +18,14 @@ enum Ressource
 };
 
 enum TuyauOrientation
-{
+{                      // * Indique test en + pour passer par la bonne case
     aucuneOrientation, // 0  ( 0, 0)
     bas,               // 1  ( 0, 2)
-    bas_gauche,        // 2  (-1, 1)
-    bas_droite,        // 3  ( 1, 1)
+    bas_gauche,        // 2  (-1, 1) *
+    bas_droite,        // 3  ( 1, 1) *
     haut,              // 4  ( 0,-2)
-    haut_gauche,       // 5  (-1,-1)
-    haut_droite,       // 6  ( 1,-1)
+    haut_gauche,       // 5  (-1,-1) *
+    haut_droite,       // 6  ( 1,-1) *
     gauche,            // 7  (-2, 0)
     gauche_haut,       // 8  (-1,-1)
     gauche_bas,        // 9  (-1, 1)

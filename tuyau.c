@@ -388,16 +388,16 @@ int orientation_tuyau(tuyau_t **p_tuyau)
 
         (*p_tuyau)->orientation[k] = orientation;
 
-        printf("x_cour %d et y_cour %d\n",
-               x_cour, y_cour);
-        printf("x_prec %d et y_prec %d\n",
-               x_prec, y_prec);
-        printf("x_suiv %d et y_suiv %d\n",
-               x_suiv, y_suiv);
-        printf("x_vect %d et y_vect %d\n",
-               x_vect, y_vect);
-        printf("oriention[%d] : %d\n\n",
-               k, orientation);
+        // printf("x_cour %d et y_cour %d\n",
+        //        x_cour, y_cour);
+        // printf("x_prec %d et y_prec %d\n",
+        //        x_prec, y_prec);
+        // printf("x_suiv %d et y_suiv %d\n",
+        //        x_suiv, y_suiv);
+        // printf("x_vect %d et y_vect %d\n",
+        //        x_vect, y_vect);
+        // printf("oriention[%d] : %d\n\n",
+        //        k, orientation);
     }
 
     return erreur;
