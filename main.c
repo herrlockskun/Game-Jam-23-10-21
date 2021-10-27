@@ -64,8 +64,8 @@ int main()
 
     SDL_Texture **tableau_minerai = malloc(10 * sizeof(SDL_Texture *));
     tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
-    tableau_minerai[1] = load_texture_from_image(PATH_BOUTON_CONSTRUCTION_TUYAU, renderer);
-    tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_HORIZONTAL, renderer);
+    tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_HORIZONTAL, renderer);
+    tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
 
     SDL_Event event;
     int tick = 0;
@@ -93,11 +93,12 @@ int main()
     bat2->pos_y = 0;
 
     map->batiment[0][0] = bat1;
-    map->batiment[0][2] = bat2;
+    map->batiment[0][4] = bat2;
     /*  code en dur a l'arache */
 
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
+    initTuyau(&l_tuyau);
 
     while (running)
     {
@@ -124,7 +125,8 @@ int main()
                 {
                     eventmenu(event.button.x, event.button.y, &status);
                 }
-                constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y);
+                if (constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y) == 6)
+                    status = 0;
 
                 break;
             case SDL_QUIT:
@@ -145,8 +147,8 @@ int main()
             tick = 0;
         }
         affichemenu(renderer, begin, font1, status);
-        dessin_tuyau(l_tuyau, tableau_minerai, renderer);
         dessin_arriere_plan(carte, renderer, tableau_minerai);
+        dessin_tuyau(l_tuyau, tableau_minerai, renderer);
 
         if (affiche)
         {

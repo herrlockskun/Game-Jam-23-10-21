@@ -19,6 +19,8 @@ all: $(OBJ)
 
 %.o:%.c
 	@$(CC) -c $< $(CFLAGS)
+	
+
 clean:
-	rm *.o
+	rm -r ./target/*.o
 

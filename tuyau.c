@@ -146,7 +146,8 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
             // Place le tuyau adjacent au batiment
             erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
-            //tuyau->cote_entree = ..............
+            PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
+            printf("bon cote\n");
         }
     }
     else // Taille != 0
@@ -161,7 +162,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             erreur = 6; // 6 - Batiment sortie bien selectione
             // Chemin de tuyau connecte
             orientation_tuyau(tuyau);
-            //tuyau->sortie = .............
+            PlaceCoteBatSortie(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
             tuyau->level = 1; // Tuyau ok -> level 1
         }
         else
@@ -310,12 +311,20 @@ int orientation_tuyau(tuyau_t *tuyau)
     //tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][1] - tuyau->sortie[1]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->sortie[1]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->sortie[0]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->sortie[0]) > 0) * 7 + ((tuyau->lien_contenu_case[i][1] - tuyau->sortie[1]) < 0) * 2 + ((tuyau->lien_contenu_case[i][1] - tuyau->sortie[1]) > 0) * 1 + ((tuyau->lien_contenu_case[i][0] - tuyau->sortie[0]) < 0) * 2 + ((tuyau->lien_contenu_case[i][0] - tuyau->sortie[0]) > 0) * 1;
 
     for (int i = 1; i < tuyau->taille - 1; i++)
+    // for (int i = 0; i < tuyau->taille; i++)
     {
         if ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) != 0)
             tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) < 0) * 2 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) > 0) * 1;
         else
             tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) < 0) * 2 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) > 0) * 1;
     }
+
+    int x_usine, y_usine, x_tuyau, y_tuyau;
+
+    /*** Gestion orientation 1er tuyau-usine entree ***/
+
+    // x_usine = tuyau.
+
     return erreur;
 }
 
@@ -364,4 +373,54 @@ int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource materiau)
     //erreur = deleteDoor(tuyau->sortie, tuyau);
 
     return erreur;
+}
+
+/******** Fonction Nathan ***********/
+
+void PlaceCoteBatEntree(map_t **p_map, int x_case_prec, int y_case_prec, int x_case_souris, int y_case_souris)
+{
+    if (y_case_souris - y_case_prec == 1)
+    {
+        (*(*p_map)->tuyau[y_case_souris][x_case_souris])->cote_entree = 0;
+        newDoor((*p_map)->batiment[y_case_prec][x_case_prec], 0, 0);
+    }
+    else if (y_case_souris - y_case_prec == -1)
+    {
+        (*(*p_map)->tuyau[y_case_souris][x_case_souris])->cote_entree = 2;
+        newDoor((*p_map)->batiment[y_case_prec][x_case_prec], 2, 0);
+    }
+    else if (x_case_souris - x_case_prec == 1)
+    {
+        (*(*p_map)->tuyau[y_case_souris][x_case_souris])->cote_entree = 1;
+        newDoor((*p_map)->batiment[y_case_prec][x_case_prec], 1, 0);
+    }
+    else if (x_case_souris - x_case_prec == -1)
+    {
+        (*(*p_map)->tuyau[y_case_souris][x_case_souris])->cote_entree = 3;
+        newDoor((*p_map)->batiment[y_case_prec][x_case_prec], 3, 0);
+    }
+}
+
+void PlaceCoteBatSortie(map_t **p_map, int x_case_prec, int y_case_prec, int x_case_souris, int y_case_souris)
+{
+    if (y_case_souris - y_case_prec == -1)
+    {
+        (*(*p_map)->tuyau[y_case_prec][x_case_prec])->cote_entree = 0;
+        newDoor((*p_map)->batiment[y_case_souris][x_case_souris], 0, 1);
+    }
+    else if (y_case_souris - y_case_prec == 1)
+    {
+        (*(*p_map)->tuyau[y_case_prec][x_case_prec])->cote_entree = 2;
+        newDoor((*p_map)->batiment[y_case_souris][x_case_souris], 2, 1);
+    }
+    else if (x_case_souris - x_case_prec == -1)
+    {
+        (*(*p_map)->tuyau[y_case_prec][x_case_prec])->cote_entree = 1;
+        newDoor((*p_map)->batiment[y_case_souris][x_case_souris], 1, 1);
+    }
+    else if (x_case_souris - x_case_prec == 1)
+    {
+        (*(*p_map)->tuyau[y_case_prec][x_case_prec])->cote_entree = 3;
+        newDoor((*p_map)->batiment[y_case_souris][x_case_souris], 3, 1);
+    }
 }

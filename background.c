@@ -78,7 +78,9 @@ void dessin_arriere_plan(int carte[20][20], SDL_Renderer *renderer, SDL_Texture 
 	}
 }
 
-void dessin_tuyau(listeTuyau_t *tuyau_l, SDL_Texture **tableau_minerai, SDL_Renderer *renderer)
+void dessin_tuyau(listeTuyau_t *tuyau_l,
+				  SDL_Texture **tableau_minerai,
+				  SDL_Renderer *renderer)
 {
 	int nb_tuyau = tuyau_l->taille;
 	int num_tuyau, x, y, angle, numero_texture, taille;
@@ -88,9 +90,9 @@ void dessin_tuyau(listeTuyau_t *tuyau_l, SDL_Texture **tableau_minerai, SDL_Rend
 		taille = tuyau_l->liste[j]->taille;
 		for (int i = 0; i < taille; i++)
 		{
-			x = tuyau_l->liste[i]->lien_contenu_case[0][0];
-			y = tuyau_l->liste[i]->lien_contenu_case[0][0];
-			num_tuyau = tuyau_l->liste[i]->orientation[0];
+			x = tuyau_l->liste[j]->lien_contenu_case[i][0];
+			y = tuyau_l->liste[j]->lien_contenu_case[i][1];
+			num_tuyau = tuyau_l->liste[j]->orientation[i];
 			angle = r_angle(num_tuyau);
 			numero_texture = r_numero_texture(num_tuyau);
 			miroir = r_miroir(num_tuyau);
