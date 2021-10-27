@@ -89,7 +89,7 @@ int main()
     batiment_io_t *bat2 = malloc(sizeof(batiment_io_t));
     bat1->pos_x = 0;
     bat1->pos_y = 0;
-    bat2->pos_x = 2;
+    bat2->pos_x = 4;
     bat2->pos_y = 0;
 
     map->batiment[0][0] = bat1;

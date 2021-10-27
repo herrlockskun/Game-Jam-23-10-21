@@ -147,7 +147,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             // Place le tuyau adjacent au batiment
             erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
             PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
-            printf("bon cote\n");
+            //printf("bon cote\n");
         }
     }
     else // Taille != 0
@@ -161,7 +161,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             tuyau->sortie = (*p_map)->batiment[y_case_souris][x_case_souris];
             erreur = 6; // 6 - Batiment sortie bien selectione
             // Chemin de tuyau connecte
-            orientation_tuyau(tuyau);
+            orientation_tuyau(&tuyau);
             PlaceCoteBatSortie(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
             tuyau->level = 1; // Tuyau ok -> level 1
         }
@@ -303,27 +303,102 @@ int check_entree_tuyau(tuyau_t *tuyau)
     return (tuyau->contenu[0] == aucuneRessource);
 }
 
-int orientation_tuyau(tuyau_t *tuyau)
+int orientation_tuyau(tuyau_t **p_tuyau)
 {
     int erreur = 0;
 
-    //tuyau->orientation[0] = ((tuyau->entree[1] - tuyau->lien_contenu_case[i][1]) < 0) * 1 + ((tuyau->entree[1] - tuyau->lien_contenu_case[i][1]) > 0) * 4 + ((tuyau->entree[0] - tuyau->lien_contenu_case[i][0]) < 0) * 10 + ((tuyau->entree[0] - tuyau->lien_contenu_case[i][0]) > 0) * 7 + ((tuyau->entree[1] - tuyau->lien_contenu_case[i + 1][1]) < 0) * 2 + ((tuyau->entree[1] - tuyau->lien_contenu_case[i + 1][1]) > 0) * 1 + ((tuyau->entree[0] - tuyau->lien_contenu_case[i + 1][0]) < 0) * 2 + ((tuyau->entree[0] - tuyau->lien_contenu_case[i + 1][0]) > 0) * 1;
-    //tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][1] - tuyau->sortie[1]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->sortie[1]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->sortie[0]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->sortie[0]) > 0) * 7 + ((tuyau->lien_contenu_case[i][1] - tuyau->sortie[1]) < 0) * 2 + ((tuyau->lien_contenu_case[i][1] - tuyau->sortie[1]) > 0) * 1 + ((tuyau->lien_contenu_case[i][0] - tuyau->sortie[0]) < 0) * 2 + ((tuyau->lien_contenu_case[i][0] - tuyau->sortie[0]) > 0) * 1;
+    // for (int i = 1; i < tuyau->taille - 1; i++)
+    // // for (int i = 0; i < tuyau->taille; i++)
+    // {
+    //     if ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) != 0)
+    //         tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) < 0) * 2 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) > 0) * 1;
+    //     else
+    //         tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) < 0) * 2 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) > 0) * 1;
+    // }
 
-    for (int i = 1; i < tuyau->taille - 1; i++)
-    // for (int i = 0; i < tuyau->taille; i++)
-    {
-        if ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) != 0)
-            tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) < 0) * 2 + ((tuyau->lien_contenu_case[i][1] - tuyau->lien_contenu_case[i + 1][1]) > 0) * 1;
-        else
-            tuyau->orientation[i] = ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) < 0) * 1 + ((tuyau->lien_contenu_case[i - 1][0] - tuyau->lien_contenu_case[i][0]) > 0) * 4 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) < 0) * 10 + ((tuyau->lien_contenu_case[i - 1][1] - tuyau->lien_contenu_case[i][1]) > 0) * 7 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) < 0) * 2 + ((tuyau->lien_contenu_case[i][0] - tuyau->lien_contenu_case[i + 1][0]) > 0) * 1;
-    }
-
-    int x_usine, y_usine, x_tuyau, y_tuyau;
+    int x_prec, y_prec, x_suiv, y_suiv;
+    // int interieur; // Variable qui permet de savoir
+    //                // comment parcourir vect x->y / y->x
+    int x_cour, y_cour;
+    int x_vect, y_vect;
+    enum TuyauOrientation orientation = aucuneOrientation;
 
     /*** Gestion orientation 1er tuyau-usine entree ***/
 
-    // x_usine = tuyau.
+    for (int k = 0; k < (*p_tuyau)->taille; k++)
+    {
+        // Regarde la position de l'item precedent
+        if (k == 0) // Premier tuyau
+        {           // Connecter par rapport au batiment entree
+            x_prec = (*p_tuyau)->entree->pos_x;
+            y_prec = (*p_tuyau)->entree->pos_y;
+        }
+        else // Deja un bout de tuyau avant
+        {    // Connecter par rapport au tuyau precedent
+            x_prec = (*p_tuyau)->lien_contenu_case[k - 1][0];
+            y_prec = (*p_tuyau)->lien_contenu_case[k - 1][1];
+        }
+
+        // Regarde la position de l'item suivant
+        if (k + 1 == (*p_tuyau)->taille) // Fin du tuyau
+        {                                // Connecter par rapport au batiment de sortie
+            x_suiv = (*p_tuyau)->sortie->pos_x;
+            y_suiv = (*p_tuyau)->sortie->pos_y;
+        }
+        else
+        {
+            x_suiv = (*p_tuyau)->lien_contenu_case[k + 1][0];
+            y_suiv = (*p_tuyau)->lien_contenu_case[k + 1][1];
+        }
+
+        // // Regarde la position du tuyau a orienter
+        // interieur = (*p_tuyau)->lien_contenu_case[k]; // Recuperation position x case
+        // interieur = abs(interieur - x_prec);
+        x_cour = (*p_tuyau)->lien_contenu_case[k][0];
+        y_cour = (*p_tuyau)->lien_contenu_case[k][1];
+
+        /*** Calcul de l'orientation ***/
+        x_vect = x_suiv - x_prec;
+        y_vect = y_suiv - y_prec;
+
+        if (x_vect == 0 && y_vect == 2)
+            orientation = bas;
+        else if (x_vect == -1 && y_vect == 1 && y_prec + y_vect == y_cour)
+            orientation = bas_gauche;
+        else if (x_vect == 1 && y_vect == 1 && y_prec + y_vect == y_cour)
+            orientation = bas_droite;
+        else if (x_vect == 0 && y_vect == -2)
+            orientation = haut;
+        else if (x_vect == -1 && y_vect == -1 && y_prec + y_vect == y_cour)
+            orientation = haut_gauche;
+        else if (x_vect == 1 && y_vect == -1 && y_prec + y_vect == y_cour)
+            orientation = haut_droite;
+        else if (x_vect == -2 && y_vect == 0)
+            orientation = gauche;
+        else if (x_vect == -1 && y_vect == -1)
+            orientation = gauche_haut;
+        else if (x_vect == -1 && y_vect == 1)
+            orientation = gauche_bas;
+        else if (x_vect == 2 && y_vect == 0)
+            orientation = droite;
+        else if (x_vect == 1 && y_vect == -1)
+            orientation = droite_haut;
+        else if (x_vect == 1 && y_vect == 1)
+            orientation = droite_bas;
+
+        (*p_tuyau)->orientation[k] = orientation;
+
+        printf("x_cour %d et y_cour %d\n",
+               x_cour, y_cour);
+        printf("x_prec %d et y_prec %d\n",
+               x_prec, y_prec);
+        printf("x_suiv %d et y_suiv %d\n",
+               x_suiv, y_suiv);
+        printf("x_vect %d et y_vect %d\n",
+               x_vect, y_vect);
+        printf("oriention[%d] : %d\n\n",
+               k, orientation);
+    }
 
     return erreur;
 }

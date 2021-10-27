@@ -19,19 +19,19 @@ enum Ressource
 
 enum TuyauOrientation
 {
-    aucuneOrientation,
-    bas,
-    bas_gauche,
-    bas_droite,
-    haut,
-    haut_gauche,
-    haut_droite,
-    gauche,
-    gauche_haut,
-    gauche_bas,
-    droite,
-    droite_haut,
-    droite_bas
+    aucuneOrientation, // 0  ( 0, 0)
+    bas,               // 1  ( 0, 2)
+    bas_gauche,        // 2  (-1, 1)
+    bas_droite,        // 3  ( 1, 1)
+    haut,              // 4  ( 0,-2)
+    haut_gauche,       // 5  (-1,-1)
+    haut_droite,       // 6  ( 1,-1)
+    gauche,            // 7  (-2, 0)
+    gauche_haut,       // 8  (-1,-1)
+    gauche_bas,        // 9  (-1, 1)
+    droite,            // 10 ( 2, 0)
+    droite_haut,       // 11 ( 1,-1)
+    droite_bas         // 12 ( 1, 1)
 };
 
 /*****************************************************/

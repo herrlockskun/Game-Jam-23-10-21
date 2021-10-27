@@ -15,7 +15,7 @@ int initTuyau(listeTuyau_t **l_tuyau);
 
 int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map);
 
-int orientation_tuyau(tuyau_t *tuyau);
+int orientation_tuyau(tuyau_t **p_tuyau);
 int check_entree_tuyau(tuyau_t *tuyau);
 int decale_dans_tuyau(tuyau_t *tuyau);
 int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource);
