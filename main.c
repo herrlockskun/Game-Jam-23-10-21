@@ -64,7 +64,7 @@ int main()
 
     SDL_Texture **tableau_minerai = malloc(10 * sizeof(SDL_Texture *));
     tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
-    tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_HORIZONTAL, renderer);
+    tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
     tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
 
     SDL_Event event;

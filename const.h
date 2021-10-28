@@ -8,8 +8,8 @@
 #define PATH_BACKGROUND_MENU "./images/cosmos.jpeg"
 
 #define PATH_BACKGROUND "./images/lune.jpg"
-#define PATH_TUYAU_HORIZONTAL "./images/horizontale.png"
-#define PATH_TUYAU_VERTICAL
+#define PATH_TUYAU_HORIZONTAL
+#define PATH_TUYAU_VERTICAL "./images/vertical.png"
 #define PATH_TUYAU_VIRAGE "./images/virage_2.png"
 
 #define PATH_FONT "./font/arial.ttf"
