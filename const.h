@@ -11,6 +11,8 @@
 #define PATH_TUYAU_HORIZONTAL
 #define PATH_TUYAU_VERTICAL "./images/vertical.png"
 #define PATH_TUYAU_VIRAGE "./images/virage_2.png"
+#define PATH_TUYAU_AUCUNE_ORIENTATION "./images/tuyau_aucune_orientation.png"
+#define PATH_CASE_SURLIGNEE "./images/case_surlignee.png"
 
 #define PATH_FONT "./font/arial.ttf"
 

@@ -66,6 +66,8 @@ int main()
     tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
     tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
     tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
+    tableau_minerai[3] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
+    tableau_minerai[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
 
     SDL_Event event;
     int tick = 0;
@@ -148,7 +150,7 @@ int main()
         }
         affichemenu(renderer, begin, font1, status);
         dessin_arriere_plan(carte, renderer, tableau_minerai);
-        dessin_tuyau(l_tuyau, tableau_minerai, renderer);
+        dessin_tuyau(l_tuyau, map, tableau_minerai, renderer);
 
         if (affiche)
         {

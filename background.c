@@ -93,7 +93,7 @@ int r_numero_texture(int num_tuyau)
 {
 	int numero_texture;
 	if (num_tuyau == 0)
-		numero_texture = 0;
+		numero_texture = 3;
 	else if (num_tuyau == 1 || num_tuyau == 4 || num_tuyau == 7 || num_tuyau == 10)
 		numero_texture = 1;
 	else
@@ -114,6 +114,7 @@ void dessin_arriere_plan(int carte[20][20], SDL_Renderer *renderer, SDL_Texture 
 }
 
 void dessin_tuyau(listeTuyau_t *tuyau_l,
+				  map_t *map,
 				  SDL_Texture **tableau_minerai,
 				  SDL_Renderer *renderer)
 {
@@ -132,6 +133,44 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 			numero_texture = r_numero_texture(num_tuyau);
 			miroir = r_miroir(num_tuyau);
 			dessin_texture(x, y, numero_texture, tableau_minerai, renderer, angle, miroir);
+		}
+
+		// printf("\n\n\n\n\n\n");
+		// for (int u = 0; u < TAILLE_MAP; ++u)
+		// {
+		// 	for (int v = 0; v < TAILLE_MAP; v++)
+		// 	{
+		// 		printf("%p ", map->tuyau[u][v]);
+		// 	}
+		// 	printf("\n");
+		// }
+		// printf("\n\n\n\n\n\n");
+
+		/*** dessin case surlignee autour de la case selectionnee ***/
+		if (tuyau_l->liste[j]->level == 0)
+		{
+			if (tuyau_l->liste[j]->taille == 0 && tuyau_l->liste[j]->entree != NULL)
+			{ // Pas de bout de tuyau mais un batiment entree selectionne
+				x = tuyau_l->liste[j]->entree->pos_x;
+				y = tuyau_l->liste[j]->entree->pos_y;
+			}
+
+			if (x + 1 < TAILLE_MAP && map->tuyau[y][x + 1] == NULL)
+			{
+				dessin_texture(x + 1, y, 4, tableau_minerai, renderer, 0, miroir);
+			}
+			if (x - 1 >= 0 && map->tuyau[y][x - 1] == NULL)
+			{
+				dessin_texture(x - 1, y, 4, tableau_minerai, renderer, 0, miroir);
+			}
+			if (y + 1 < TAILLE_MAP && map->tuyau[y + 1][x] == NULL)
+			{
+				dessin_texture(x, y + 1, 4, tableau_minerai, renderer, 0, miroir);
+			}
+			if (y - 1 >= 0 && map->tuyau[y - 1][x] == NULL)
+			{
+				dessin_texture(x, y - 1, 4, tableau_minerai, renderer, 0, miroir);
+			}
 		}
 	}
 }
