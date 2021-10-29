@@ -126,10 +126,17 @@ int main()
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.x > 900)
                 {
-                    eventmenu(event.button.x, event.button.y, &status);
+                    // eventmenu(event.button.x, event.button.y, &status);
+                    // test si appuye dans le menu => annulation de la derniere action
+                    if (annulerConstructionTuyauUnite(&l_tuyau, map) == 1)
+                    {
+                        status = 0;
+                    }
                 }
                 if (constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y) == 6)
+                {
                     status = 0;
+                }
 
                 break;
             case SDL_QUIT:

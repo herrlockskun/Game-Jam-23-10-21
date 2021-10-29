@@ -274,29 +274,82 @@ int initTuyau(listeTuyau_t **l_tuyau)
 }
 
 /***************************************************/
+/* annulerConstructionTuyauUnite :                 */
+/*      annule la dernière unite tuyau construite  */
+/*  OU  annule le dernier batiment entree select   */
 /*                                                 */
-/*  erreur : 0 - porte supprime                    */
-/*           1 - porte pas trouve sur le batiment  */
-/*           2 - batiment pas lie                  */
+/* entree : liste de tuyau                         */
+/*                                                 */
+/* erreur : 0 - Bizarre ne devrait pas rester a 0  */
+/*          1 - Batiment entree bien deco (succes) */
+/*          2 - Batiment entree pas deco (echec)   */
+/*          3 - Pas de batiment entree a deco      */
+/*          4 - Derniere unite tuyau bien supp     */
+/*          5 - Tuyau deja entierement construit   */
 /*                                                 */
 /***************************************************/
-int annulerConstructionTuyau(tuyau_t *tuyau, map_t *map)
+int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
 {
-    int erreur = 1;
+    int erreur = 0;
+
+    // Recuperation du dernier tuyau
+    tuyau_t *dernier_tuyau = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
 
     int x_unite, y_unite;
 
-    for (int i = 0; i < tuyau->taille; ++i)
-    {
-        // Recuperation coordonnees du dernier tuyau
-        x_unite = tuyau->lien_contenu_case[i][0];
-        y_unite = tuyau->lien_contenu_case[i][1];
+    if (dernier_tuyau->level == 0)
+    { // Si le tuyau est toujours en construction
 
-        map->tuyau[y_unite][x_unite] = NULL; // Reset de la case dans map
+        int taille_tuyau = dernier_tuyau->taille;
+
+        if (taille_tuyau == 0)
+        { // Pas d'unite de tuyau
+            if (dernier_tuyau->entree != NULL)
+            { // Que bat entree selectionne
+                //supprimer la porte
+                erreur = deleteDoor(dernier_tuyau->entree, dernier_tuyau->cote_entree);
+                if (erreur == 0)
+                {
+                    dernier_tuyau->entree = NULL; // Supprime la connexion avec bat
+                    erreur = 1;                   // Batiment entree correctement deconnecte
+                    /* a supp dans la liste des tuyau */
+                }
+                else
+                {
+                    erreur = 2; // Bat entree pas deco
+                }
+            }
+            else
+            {
+                erreur = 3; // Pas de batiment entree a deco
+            }
+        }
+        else
+        { // Unite de tuyau a supp
+
+            // Recuperation coordonnees du dernier unite tuyau
+            x_unite = dernier_tuyau->lien_contenu_case[taille_tuyau - 1][0];
+            y_unite = dernier_tuyau->lien_contenu_case[taille_tuyau - 1][1];
+
+            // Effacement de la derniere unite de tuyau dans le tuyau lui meme
+            taille_tuyau -= 1; // Decremente la taille
+            dernier_tuyau->lien_contenu_case[taille_tuyau][0] = -1;
+            dernier_tuyau->lien_contenu_case[taille_tuyau][1] = -1;
+            dernier_tuyau->orientation[taille_tuyau] = aucuneOrientation; // Normalement deja avec aucune orientation
+
+            dernier_tuyau->taille = taille_tuyau; // affecte la taille decremente du tuyau
+
+            // Effacement de la derniere unite de tuyau dans la map
+            map->tuyau[y_unite][x_unite] = NULL;
+
+            erreur = 4;
+        }
     }
-    //tuyau_t *tmp = tuyau;
+    else
+    { // Tuyau deja construit entierement
+        erreur = 5;
+    }
 
-    free(tuyau); //Libere le tuyau
     return erreur;
 }
 
@@ -305,6 +358,16 @@ int check_entree_tuyau(tuyau_t *tuyau)
     return (tuyau->contenu[0] == aucuneRessource);
 }
 
+/***************************************************/
+/* orientation_tuyau : calcul l'orientation des    */
+/*                     des bouts de tuyau          */
+/* fonction appelee quand le tuyau est ok          */
+/* ie: bat entree - tuyau -...- tuyau - bat sortie */
+/*                                                 */
+/* entree : un pointeur de tuyau                   */
+/*                                                 */
+/* sortie : 0 pas de signification                 */
+/***************************************************/
 int orientation_tuyau(tuyau_t **p_tuyau)
 {
     int erreur = 0;
@@ -324,8 +387,6 @@ int orientation_tuyau(tuyau_t **p_tuyau)
     int x_cour, y_cour;
     int x_vect, y_vect;
     enum TuyauOrientation orientation = aucuneOrientation;
-
-    /*** Gestion orientation 1er tuyau-usine entree ***/
 
     for (int k = 0; k < (*p_tuyau)->taille; k++)
     {
@@ -354,8 +415,6 @@ int orientation_tuyau(tuyau_t **p_tuyau)
         }
 
         // // Regarde la position du tuyau a orienter
-        // interieur = (*p_tuyau)->lien_contenu_case[k]; // Recuperation position x case
-        // interieur = abs(interieur - x_prec);
         x_cour = (*p_tuyau)->lien_contenu_case[k][0];
         y_cour = (*p_tuyau)->lien_contenu_case[k][1];
 
@@ -389,17 +448,6 @@ int orientation_tuyau(tuyau_t **p_tuyau)
             orientation = droite_bas;
 
         (*p_tuyau)->orientation[k] = orientation;
-
-        // printf("x_cour %d et y_cour %d\n",
-        //        x_cour, y_cour);
-        // printf("x_prec %d et y_prec %d\n",
-        //        x_prec, y_prec);
-        // printf("x_suiv %d et y_suiv %d\n",
-        //        x_suiv, y_suiv);
-        // printf("x_vect %d et y_vect %d\n",
-        //        x_vect, y_vect);
-        // printf("oriention[%d] : %d\n\n",
-        //        k, orientation);
     }
 
     return erreur;
