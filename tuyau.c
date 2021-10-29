@@ -144,10 +144,11 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             x_case_prec = tuyau->entree->pos_x;
             y_case_prec = tuyau->entree->pos_y;
             erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
-            // Place le tuyau adjacent au batiment
-            erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
-            PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
-            //printf("bon cote\n");
+            if (erreur == 0) // case clique est du sol
+            {                // Place le tuyau adjacent au batiment
+                erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
+                PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
+            }
         }
     }
     else // Taille != 0
@@ -165,7 +166,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             PlaceCoteBatSortie(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
             tuyau->level = 1; // Tuyau ok -> level 1
         }
-        else
+        else if (erreur == 0) //case clique est du sol
         {
             // Place le tuyau adjacent au tuyau precedent
             erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
@@ -229,6 +230,7 @@ int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_c
             erreur = 4; // Case souris -> batiment
         }
     }
+    // printf("erreur : %d\n\n", erreur);
     return erreur;
 }
 

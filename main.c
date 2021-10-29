@@ -83,6 +83,7 @@ int main()
     {
         for (int j = 0; j < TAILLE_MAP; j++)
         {
+            map->vierge[i][j] = sol;
             map->batiment[i][j] = NULL;
             map->tuyau[i][j] = NULL;
         }
