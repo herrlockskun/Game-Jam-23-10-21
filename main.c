@@ -101,6 +101,7 @@ int main()
 
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
+    // Creation d'un tuyau pour les tests
     initTuyau(&l_tuyau);
 
     while (running)
