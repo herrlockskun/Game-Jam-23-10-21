@@ -101,7 +101,11 @@ int main()
 
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
+
+    tuyau_t* tuyau_selectionne = NULL;
+
     // Creation d'un tuyau pour les tests
+    initTuyau(&l_tuyau);
     initTuyau(&l_tuyau);
 
     while (running)
@@ -157,7 +161,8 @@ int main()
             affiche = 1;
             tick = 0;
         }
-        affichemenu(renderer, begin, font1, status);
+        affichemenu(renderer, 0, font1, status);
+        // affichemenu(renderer, begin, font1, status);
         dessin_arriere_plan(carte, renderer, tableau_minerai);
         dessin_tuyau(l_tuyau, map, tableau_minerai, renderer);
 

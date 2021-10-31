@@ -29,7 +29,7 @@ int mainTuyau()
     if (erreur == 0)
     {
 
-        //Clic construction
+        // Clic construction
         erreur = initTuyau(&l);
 
         if (erreur == 0)
@@ -83,8 +83,8 @@ int initListeTuyau(listeTuyau_t **l_tuyau)
         {
             (*l_tuyau)->liste[i] = NULL;
         }
-
-        erreur = 0; // Allocation reussi
+        (*l_tuyau)->tuyau_select = NULL; // Aucun tuyau selectionne
+        erreur = 0;                      // Allocation reussi
     }
     return erreur;
 }
@@ -98,6 +98,7 @@ int initListeTuyau(listeTuyau_t **l_tuyau)
 /* 4-selectionner batiment adjacent derniere case   */
 /*                                                  */
 /* erreur :                                         */
+/*         -2 - Bat select level != 0 -> pas const  */
 /*         -1 - Pas de bat select en debut chemin   */
 /*          0 - Tuyau bien place                    */
 /*          1 - Case pas voisinnage                 */
@@ -114,7 +115,9 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
     int x_case_prec, y_case_prec;
 
     tuyau_t *tuyau = NULL;
-    tuyau = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+
+    tuyau = *(*p_l_tuyau)->tuyau_select; // Acces au tuyau select
+    // tuyau = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
     int x_case_souris,
         y_case_souris;
 
@@ -122,55 +125,63 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
     y_case_souris = y_souris / 45; // Ils onts pas fait un define ces sauvages
 
     //    printf("x : %d,  y : %d \n", x_case_souris, y_case_souris);
-
-    if (tuyau->taille == 0)
+    if (tuyau->level == 0)
     {
-        if (tuyau->entree == NULL) // Clic sur usine car debut tuyau
+        if (tuyau->taille == 0)
         {
-
-            if ((*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
-            { // Lien du tuyau d'entre avec la sortie
-                tuyau->entree = (*p_map)->batiment[y_case_souris][x_case_souris];
-                erreur = 5; // Batiment bien selectionne
-            }
-            else
+            if (tuyau->entree == NULL) // Clic sur usine car debut tuyau
             {
-                erreur = -1; // Pas un batiment selectione pour debut du tuyau
+
+                if ((*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
+                { // Lien du tuyau d'entre avec la sortie
+                    tuyau->entree = (*p_map)->batiment[y_case_souris][x_case_souris];
+                    erreur = 5; // Batiment bien selectionne
+                }
+                else
+                {
+                    erreur = -1; // Pas un batiment selectione pour debut du tuyau
+                }
+            }
+            else // Batiment entree deja selectionne
+            {    // Doit placer un tuyau
+                // Check case adjacente
+                x_case_prec = tuyau->entree->pos_x;
+                y_case_prec = tuyau->entree->pos_y;
+                erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
+                if (erreur == 0) // case clique est du sol
+                {                // Place le tuyau adjacent au batiment
+                    erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
+                    PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
+                }
             }
         }
-        else // Batiment entree deja selectionne
-        {    // Doit placer un tuyau
+        else // Taille != 0
+        {
             // Check case adjacente
-            x_case_prec = tuyau->entree->pos_x;
-            y_case_prec = tuyau->entree->pos_y;
+            x_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][0];
+            y_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][1];
             erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
-            if (erreur == 0) // case clique est du sol
-            {                // Place le tuyau adjacent au batiment
+            if (erreur == 4) // Case souris -> batiment
+            {                // Selectionne le dernier batiment
+                tuyau->sortie = (*p_map)->batiment[y_case_souris][x_case_souris];
+                erreur = 6; // 6 - Batiment sortie bien selectione
+                // Chemin de tuyau connecte
+                orientation_tuyau(&tuyau);
+                PlaceCoteBatSortie(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
+                tuyau->level = 1; // Tuyau ok -> level 1
+
+                (*p_l_tuyau)->tuyau_select = NULL; // Deselection du tuyau
+            }
+            else if (erreur == 0) // case clique est du sol
+            {
+                // Place le tuyau adjacent au tuyau precedent
                 erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
-                PlaceCoteBatEntree(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
             }
         }
     }
-    else // Taille != 0
-    {
-        // Check case adjacente
-        x_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][0];
-        y_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][1];
-        erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
-        if (erreur == 4) // Case souris -> batiment
-        {                // Selectionne le dernier batiment
-            tuyau->sortie = (*p_map)->batiment[y_case_souris][x_case_souris];
-            erreur = 6; // 6 - Batiment sortie bien selectione
-            // Chemin de tuyau connecte
-            orientation_tuyau(&tuyau);
-            PlaceCoteBatSortie(p_map, x_case_prec, y_case_prec, x_case_souris, y_case_souris);
-            tuyau->level = 1; // Tuyau ok -> level 1
-        }
-        else if (erreur == 0) //case clique est du sol
-        {
-            // Place le tuyau adjacent au tuyau precedent
-            erreur = placeTuyau(&tuyau, p_map, x_case_souris, y_case_souris);
-        }
+    else
+    { // Level pas a 0 -> bat pas en construction
+        erreur = -2; // Bat mal selectionne
     }
     return erreur;
 }
@@ -267,6 +278,7 @@ int initTuyau(listeTuyau_t **l_tuyau)
         }
         // Ajout du tuyau vierge cree dans tab tuyau
         (*l_tuyau)->liste[(*l_tuyau)->taille] = tuyau; /**** ATTENTION ****/
+        (*l_tuyau)->tuyau_select = &(*l_tuyau)->liste[(*l_tuyau)->taille];
         (*l_tuyau)->taille++;
     }
 
@@ -287,32 +299,34 @@ int initTuyau(listeTuyau_t **l_tuyau)
 /*          4 - Derniere unite tuyau bien supp     */
 /*          5 - Tuyau deja entierement construit   */
 /*                                                 */
+/* sortie : erreur = 1 -> unite+entree supprime    */
 /***************************************************/
 int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
 {
     int erreur = 0;
 
     // Recuperation du dernier tuyau
-    tuyau_t *dernier_tuyau = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+    tuyau_t *tuyau_select = *((*p_l_tuyau)->tuyau_select);
 
     int x_unite, y_unite;
 
-    if (dernier_tuyau->level == 0)
+    if (tuyau_select->level == 0)
     { // Si le tuyau est toujours en construction
 
-        int taille_tuyau = dernier_tuyau->taille;
+        int taille_tuyau = tuyau_select->taille;
 
         if (taille_tuyau == 0)
         { // Pas d'unite de tuyau
-            if (dernier_tuyau->entree != NULL)
+            if (tuyau_select->entree != NULL)
             { // Que bat entree selectionne
-                //supprimer la porte
-                erreur = deleteDoor(dernier_tuyau->entree, dernier_tuyau->cote_entree);
+                // supprimer la porte
+                erreur = deleteDoor(tuyau_select->entree, tuyau_select->cote_entree);
                 if (erreur == 0)
                 {
-                    dernier_tuyau->entree = NULL; // Supprime la connexion avec bat
-                    erreur = 1;                   // Batiment entree correctement deconnecte
+                    tuyau_select->entree = NULL; // Supprime la connexion avec bat
+                    erreur = 1;                  // Batiment entree correctement deconnecte
                     /* a supp dans la liste des tuyau */
+                    suppressionTuyau(p_l_tuyau); // test en cours
                 }
                 else
                 {
@@ -328,16 +342,16 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
         { // Unite de tuyau a supp
 
             // Recuperation coordonnees du dernier unite tuyau
-            x_unite = dernier_tuyau->lien_contenu_case[taille_tuyau - 1][0];
-            y_unite = dernier_tuyau->lien_contenu_case[taille_tuyau - 1][1];
+            x_unite = tuyau_select->lien_contenu_case[taille_tuyau - 1][0];
+            y_unite = tuyau_select->lien_contenu_case[taille_tuyau - 1][1];
 
             // Effacement de la derniere unite de tuyau dans le tuyau lui meme
             taille_tuyau -= 1; // Decremente la taille
-            dernier_tuyau->lien_contenu_case[taille_tuyau][0] = -1;
-            dernier_tuyau->lien_contenu_case[taille_tuyau][1] = -1;
-            dernier_tuyau->orientation[taille_tuyau] = aucuneOrientation; // Normalement deja avec aucune orientation
+            tuyau_select->lien_contenu_case[taille_tuyau][0] = -1;
+            tuyau_select->lien_contenu_case[taille_tuyau][1] = -1;
+            tuyau_select->orientation[taille_tuyau] = aucuneOrientation; // Normalement deja avec aucune orientation
 
-            dernier_tuyau->taille = taille_tuyau; // affecte la taille decremente du tuyau
+            tuyau_select->taille = taille_tuyau; // affecte la taille decremente du tuyau
 
             // Effacement de la derniere unite de tuyau dans la map
             map->tuyau[y_unite][x_unite] = NULL;
@@ -351,6 +365,27 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
     }
 
     return erreur;
+}
+
+/***************************************************/
+/*     */
+/*                             */
+/*        */
+/*  */
+/*                                                 */
+/* entree :                  */
+/*                                                 */
+/* sortie :               */
+/***************************************************/
+int suppressionTuyau(listeTuyau_t **p_l_tuyau)
+{
+    /*** Test si le tuyau a supprimer est le dernier de la liste ***/
+    if ((*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] == (*p_l_tuyau)->tuyau_select)
+    {   // Pas le dernier de la liste
+        // Il faut copier le dernier a sa place
+        free((*p_l_tuyau)->tuyau_select);
+        (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+    }
 }
 
 int check_entree_tuyau(tuyau_t *tuyau)
@@ -457,7 +492,7 @@ int decale_dans_tuyau(tuyau_t *tuyau)
 {
     int erreur = 0;
 
-    //Test d'insertion d'une matière dans l'usine alors on dit qu'il n'y a plus de ressources dans la case sinon on ne peut décaler la dernière case
+    // Test d'insertion d'une matière dans l'usine alors on dit qu'il n'y a plus de ressources dans la case sinon on ne peut décaler la dernière case
     /*if (insertion_dans_usine(tuyau->sortie))
     {
         ajout_stock_usine(tuyau->contenu[tuyau->taille-1]);
@@ -494,8 +529,8 @@ int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource materiau)
     }
 
     // Supprime la connexion avec batiment si elle existe
-    //erreur = deleteDoor(tuyau->entree, tuyau);
-    //erreur = deleteDoor(tuyau->sortie, tuyau);
+    // erreur = deleteDoor(tuyau->entree, tuyau);
+    // erreur = deleteDoor(tuyau->sortie, tuyau);
 
     return erreur;
 }
