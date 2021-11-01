@@ -24,6 +24,9 @@ int insertion_dans_tuyau(tuyau_t *tuyau, enum Ressource);
 
 int suppressionTuyau(listeTuyau_t **l_tuyau);
 
+int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t*map, int x_souris, int y_souris);
+
+
 // Fonction Nathan
 void PlaceCoteBatEntree(map_t **p_map, int x_case_prec, int y_case_prec, int x_case_souris, int y_case_souris);
 void PlaceCoteBatSortie(map_t **p_map, int x_case_prec, int y_case_prec, int x_case_souris, int y_case_souris);

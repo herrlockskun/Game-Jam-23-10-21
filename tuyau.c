@@ -388,7 +388,7 @@ int suppressionTuyau(listeTuyau_t **p_l_tuyau)
     if (&(*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] != (*p_l_tuyau)->tuyau_select)
     { // Pas le dernier de la liste
         // Il faut copier le dernier a sa place
-        (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+        *(*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
         erreur = 1; // Mvt dans la liste -> liste contigue
     }
     free((*(*p_l_tuyau)->tuyau_select)); // Normalement free du tuyau
@@ -398,6 +398,38 @@ int suppressionTuyau(listeTuyau_t **p_l_tuyau)
 
     return erreur;
 }
+
+
+/***************************************************/
+/* selectionTuyauMap : Check case de map pour      */
+/*                     select  le tuyau associe    */
+/*                                                 */
+/* entree : adr d'un pointeur liste tuyau          */
+/*                                                 */
+/* erreur : 0 - Pas de tuyau selectionne           */
+/*          1 - existant tuyau et selection        */
+/*                                                 */
+/***************************************************/
+int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t*map, int x_souris, int y_souris)
+{
+    int erreur = 0; // Pas de tuyau selectionne
+    int x_case_souris, y_case_souris;
+    x_case_souris = x_souris / TAILLE_CASE_MAP;
+    y_case_souris = y_souris / TAILLE_CASE_MAP;
+
+    // Select le tuyau relie a la case cliquee
+    (*p_l_tuyau)->tuyau_select = map->tuyau[y_case_souris][x_case_souris];
+    
+    if ((*p_l_tuyau)->tuyau_select != NULL)
+    {
+        erreur = 1; // existant tuyau et selection ok
+    }
+
+    return erreur;
+
+}
+
+
 
 int check_entree_tuyau(tuyau_t *tuyau)
 {
