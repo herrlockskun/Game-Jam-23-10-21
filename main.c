@@ -74,7 +74,7 @@ int main()
     int affiche = 0;
     clock_t begin, end;
     begin = clock();
-    int status = 1;
+    int status = 0;
 
     /*  code en dur a l'arache */
     map_t *map = NULL;
@@ -102,11 +102,13 @@ int main()
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
 
-    tuyau_t* tuyau_selectionne = NULL;
+    tuyau_t *tuyau_selectionne = NULL;
 
     // Creation d'un tuyau pour les tests
-    initTuyau(&l_tuyau);
-    initTuyau(&l_tuyau);
+    // initTuyau(&l_tuyau);
+    // status = 0;
+
+    Uint32 timeout = SDL_GetTicks() + 100;
 
     while (running)
     {
@@ -128,41 +130,77 @@ int main()
                     break;
                 }
                 break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.x > 900)
+            /*** Appuye sur bouton pour les tests ***/
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
                 {
-                    // eventmenu(event.button.x, event.button.y, &status);
-                    // test si appuye dans le menu => annulation de la derniere action
-                    if (annulerConstructionTuyauUnite(&l_tuyau, map) == 1)
+                case SDLK_SPACE: // 'SPC'
+                    if (status == 0)
                     {
-                        status = 0;
+                        printf("initTuyau %d\n", initTuyau(&l_tuyau));
+                        status = 1; // mode edition
                     }
+                    break;
+                case SDLK_ESCAPE:
+                    running = 0;
+                    break;
+                default:
+                    break;
                 }
-                if (constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y) == 6)
+                break;
+            /*** Appuye sur bouton pour les tests ***/
+            case SDL_MOUSEBUTTONDOWN:
+                if (status == 1)
                 {
-                    status = 0;
+                    if (event.button.x > 900)
+                    {
+                        // eventmenu(event.button.x, event.button.y, &status);
+                        // test si appuye dans le menu => annulation de la derniere action
+                        if (annulerConstructionTuyauUnite(&l_tuyau, map) == 1)
+                        {
+                            status = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y) == 6)
+                        {
+                            status = 0;
+                        }
+                    }
                 }
 
                 break;
             case SDL_QUIT:
                 running = 0;
                 break;
+            default:
+                break;
             }
-            break;
         }
         end = clock();
-        if (((end - begin) * 1000 / CLOCKS_PER_SEC) > 100) //1 tick = 100ms
+        if (((end - begin) * 1000 / CLOCKS_PER_SEC) > 100) // 1 tick = 100ms
         {
             tick = 1;
             begin = clock();
         }
+
+        // if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
+        // {
+        //     tick = 1;
+        //     timeout = SDL_GetTicks() + 50;
+        //     // begin = clock();
+        // }
+
         if (tick)
         {
             affiche = 1;
             tick = 0;
         }
-        affichemenu(renderer, 0, font1, status);
-        // affichemenu(renderer, begin, font1, status);
+
+        // affichemenu(renderer, 1, font1, status);
+        // affichemenu(renderer, clock(), font1, status);
+        affichemenu(renderer, begin, font1, status);
         dessin_arriere_plan(carte, renderer, tableau_minerai);
         dessin_tuyau(l_tuyau, map, tableau_minerai, renderer);
 

@@ -180,7 +180,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
         }
     }
     else
-    { // Level pas a 0 -> bat pas en construction
+    {                // Level pas a 0 -> bat pas en construction
         erreur = -2; // Bat mal selectionne
     }
     return erreur;
@@ -254,18 +254,19 @@ int initTuyau(listeTuyau_t **l_tuyau)
 {
     int erreur = 1;
 
-    tuyau_t *tuyau = (tuyau_t *)malloc(sizeof(tuyau_t));
+    (*l_tuyau)->liste[(*l_tuyau)->taille] = (tuyau_t *)malloc(sizeof(tuyau_t));
+    tuyau_t *tuyau = (*l_tuyau)->liste[(*l_tuyau)->taille];
 
     if (tuyau != NULL)
     {
         erreur = 0;
         tuyau->taille = 0;
-        tuyau->level = 0; // level = 0 quand tuyau pas encore ok
-        tuyau->cote_entree = -1;
-        tuyau->cote_sortie = -1;
+        tuyau->level = 0;        // level = 0 quand tuyau pas encore ok
+        tuyau->cote_entree = -1; // Pas encore de bat co
+        tuyau->cote_sortie = -1; // Pas encore de bat co
 
-        tuyau->entree = NULL;
-        tuyau->sortie = NULL;
+        tuyau->entree = NULL; // Pas encore de bat co
+        tuyau->sortie = NULL; // Pas encore de bat co
 
         for (int i = 0; i < NB_MAX_CASE; i++)
         {
@@ -277,7 +278,7 @@ int initTuyau(listeTuyau_t **l_tuyau)
             tuyau->orientation[i] = aucuneOrientation;
         }
         // Ajout du tuyau vierge cree dans tab tuyau
-        (*l_tuyau)->liste[(*l_tuyau)->taille] = tuyau; /**** ATTENTION ****/
+        // (*l_tuyau)->liste[(*l_tuyau)->taille] = tuyau; /**** ATTENTION ****/
         (*l_tuyau)->tuyau_select = &(*l_tuyau)->liste[(*l_tuyau)->taille];
         (*l_tuyau)->taille++;
     }
@@ -379,13 +380,17 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
 /***************************************************/
 int suppressionTuyau(listeTuyau_t **p_l_tuyau)
 {
-    /*** Test si le tuyau a supprimer est le dernier de la liste ***/
-    if ((*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] == (*p_l_tuyau)->tuyau_select)
-    {   // Pas le dernier de la liste
-        // Il faut copier le dernier a sa place
-        free((*p_l_tuyau)->tuyau_select);
-        (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+    /*** Test si le tuyau a supprimer n'est pas le dernier de la liste ***/
+    /*** Adresse pointee par select est diff de adresse case de la liste contenant le dernier tuyau ***/
+    if (&(*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] != (*p_l_tuyau)->tuyau_select)
+    { // Pas le dernier de la liste
+      // Il faut copier le dernier a sa place
+      (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
     }
+    free((*(*p_l_tuyau)->tuyau_select)); // Normalement free du tuyau
+    *(*p_l_tuyau)->tuyau_select = NULL;  // Pointeur dans liste
+    (*p_l_tuyau)->tuyau_select = NULL;   // Selection de tuyau
+    (*p_l_tuyau)->taille--;
 }
 
 int check_entree_tuyau(tuyau_t *tuyau)
