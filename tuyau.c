@@ -369,28 +369,34 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
 }
 
 /***************************************************/
-/*     */
-/*                             */
-/*        */
-/*  */
+/* suppressionTuyau : free et reorganise la liste  */
+/*                    de tuyau si besoin pour      */
+/*                    garder la contiguite         */
 /*                                                 */
-/* entree :                  */
+/* entree : adr d'un pointeur liste tuyau          */
 /*                                                 */
-/* sortie :               */
+/* erreur : 0 - supp dans liste du dernier tuyau   */
+/*          1 - supp d'un tuyau et decalge         */
+/*                                                 */
 /***************************************************/
 int suppressionTuyau(listeTuyau_t **p_l_tuyau)
 {
+    int erreur = 0; // Si aucun mvt dans la liste
+
     /*** Test si le tuyau a supprimer n'est pas le dernier de la liste ***/
     /*** Adresse pointee par select est diff de adresse case de la liste contenant le dernier tuyau ***/
     if (&(*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] != (*p_l_tuyau)->tuyau_select)
     { // Pas le dernier de la liste
-      // Il faut copier le dernier a sa place
-      (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+        // Il faut copier le dernier a sa place
+        (*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
+        erreur = 1; // Mvt dans la liste -> liste contigue
     }
     free((*(*p_l_tuyau)->tuyau_select)); // Normalement free du tuyau
     *(*p_l_tuyau)->tuyau_select = NULL;  // Pointeur dans liste
     (*p_l_tuyau)->tuyau_select = NULL;   // Selection de tuyau
     (*p_l_tuyau)->taille--;
+
+    return erreur;
 }
 
 int check_entree_tuyau(tuyau_t *tuyau)
