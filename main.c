@@ -151,7 +151,7 @@ int main()
             /*** Appuye sur bouton pour les tests ***/
             case SDL_MOUSEBUTTONDOWN:
                 if (status == 1)
-                {
+                { // Mode edition
                     if (event.button.x > 900)
                     {
                         // eventmenu(event.button.x, event.button.y, &status);
@@ -167,6 +167,14 @@ int main()
                         {
                             status = 0;
                         }
+                    }
+                }
+                else if (status == 0)
+                { // Pas en mode edition
+                    if (event.button.x < 900)
+                    {
+                        selectionTuyauMap(&l_tuyau, map, event.button.x, event.button.y);
+                        suppressionTotalTuyau(&l_tuyau, map);
                     }
                 }
 

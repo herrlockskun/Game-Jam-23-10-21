@@ -298,7 +298,9 @@ int initTuyau(listeTuyau_t **l_tuyau)
 /*          2 - Batiment entree pas deco (echec)   */
 /*          3 - Pas de batiment entree a deco      */
 /*          4 - Derniere unite tuyau bien supp     */
-/*          5 - Tuyau deja entierement construit   */
+/*          5 - Batiment sortie bien deco (succes) */
+/*          6 - Batiment entree pas deco (echec)   */
+/*          7 - Pas de batiment sortie a deco (NON)*/
 /*                                                 */
 /* sortie : erreur = 1 -> unite+entree supprime    */
 /***************************************************/
@@ -327,7 +329,7 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
                     tuyau_select->entree = NULL; // Supprime la connexion avec bat
                     erreur = 1;                  // Batiment entree correctement deconnecte
                     /* a supp dans la liste des tuyau */
-                    suppressionTuyau(p_l_tuyau); // test en cours
+                    suppressionTuyau(p_l_tuyau); // semble ok, mais suppression avec reoganisation de la liste tuyau pas vraiment testee
                 }
                 else
                 {
@@ -360,9 +362,29 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
             erreur = 4;
         }
     }
-    else
-    { // Tuyau deja construit entierement
-        erreur = 5;
+    else // level > 1
+    {    // Tuyau deja construit entierement
+
+        if (tuyau_select->sortie != NULL)
+        { // Que bat sortie selectionne
+            // supprimer la porte
+            erreur = deleteDoor(tuyau_select->sortie, tuyau_select->cote_sortie);
+            if (erreur == 0)
+            {
+                tuyau_select->sortie = NULL; // Supprime la connexion avec bat
+                erreur = 5;                  // Batiment sortie correctement deconnecte
+                tuyau_select->level = 0;     // Passe le tuyau en non fini
+            }
+            else
+            {
+                erreur = 6; // Bat sortie pas deco
+            }
+        }
+        else
+        {
+            erreur = 7; // Pas de batiment sortie a deco
+            // Pas normale car tuyau avec level = 1 -> tuyau correctement forme
+        }
     }
 
     return erreur;
@@ -399,18 +421,18 @@ int suppressionTuyau(listeTuyau_t **p_l_tuyau)
     return erreur;
 }
 
-
 /***************************************************/
 /* selectionTuyauMap : Check case de map pour      */
 /*                     select  le tuyau associe    */
 /*                                                 */
 /* entree : adr d'un pointeur liste tuyau          */
+/*          map                                    */
+/*          2 entiers : postion souris en pixel    */
 /*                                                 */
 /* erreur : 0 - Pas de tuyau selectionne           */
 /*          1 - existant tuyau et selection        */
-/*                                                 */
 /***************************************************/
-int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t*map, int x_souris, int y_souris)
+int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t *map, int x_souris, int y_souris)
 {
     int erreur = 0; // Pas de tuyau selectionne
     int x_case_souris, y_case_souris;
@@ -419,17 +441,36 @@ int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t*map, int x_souris, int y_s
 
     // Select le tuyau relie a la case cliquee
     (*p_l_tuyau)->tuyau_select = map->tuyau[y_case_souris][x_case_souris];
-    
+
     if ((*p_l_tuyau)->tuyau_select != NULL)
     {
         erreur = 1; // existant tuyau et selection ok
     }
 
     return erreur;
-
 }
 
+/***************************************************/
+/* suppressionTotalTuyau :       */
+/*                         */
+/*                                                 */
+/* entree : adr d'un pointeur liste tuyau          */
+/*          map                                    */
+/*                                                 */
+/* erreur : 0 -            */
+/*          1 -         */
+/***************************************************/
+int suppressionTotalTuyau(listeTuyau_t **p_l_tuyau, map_t *map)
+{
+    int erreur = 1; // Tuyau pas encore construit -> level = 0
 
+
+    while ((*p_l_tuyau)->tuyau_select != NULL)
+    {
+        annulerConstructionTuyauUnite(p_l_tuyau, map);
+    }
+    return erreur;
+}
 
 int check_entree_tuyau(tuyau_t *tuyau)
 {
