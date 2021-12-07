@@ -38,7 +38,6 @@ int main()
     }
 
     /*** Initialisation TTF et font ***/
-
     if (TTF_Init() != 0)
     {
         fprintf(stderr, "Erreur d'initialisation TTF : %s\n", TTF_GetError());
@@ -52,16 +51,18 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
 
-    int carte[20][20];
+    /*** Initialisation de la carte ***/
+    // int carte[20][20];
 
-    for (int j = 0; j < 20; ++j)
-    {
-        for (int i = 0; i < 20; ++i)
-        {
-            carte[i][j] = 0;
-        }
-    }
+    // for (int j = 0; j < 20; ++j)
+    // {
+    //     for (int i = 0; i < 20; ++i)
+    //     {
+    //         carte[i][j] = 0;
+    //     }
+    // }
 
+    /*** Charge les textures ***/
     SDL_Texture **tableau_minerai = malloc(10 * sizeof(SDL_Texture *));
     tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
     tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
@@ -69,14 +70,9 @@ int main()
     tableau_minerai[3] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
     tableau_minerai[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
 
-    SDL_Event event;
-    int tick = 0;
-    int affiche = 0;
-    clock_t begin, end;
-    begin = clock();
-    int status = 1;
+    // SDL_Texture* fond=dessin_arriere_plan(renderer, tableau_matiere);
 
-    /*  code en dur a l'arache */
+    /***  code en dur a l'arache ***/
     map_t *map = NULL;
     map = malloc(sizeof(map_t));
     for (int i = 0; i < TAILLE_MAP; ++i)
@@ -99,9 +95,18 @@ int main()
     map->batiment[0][4] = bat2;
     /*  code en dur a l'arache */
 
+    /*** Creation de la liste des tuyau ***/
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
-    initTuyau(&l_tuyau);
+    initTuyau(&l_tuyau); // car on commence en creant un tuyau
+
+    SDL_Event event;
+    int tick = 0;
+    int affiche = 0;
+    clock_t begin, end;
+    begin = clock();
+    int status = 1;
+    int money = 5100;
 
     while (running)
     {
@@ -128,7 +133,8 @@ int main()
                 {
                     eventmenu(event.button.x, event.button.y, &status);
                 }
-                if (constructionTuyau(&l_tuyau, &map, event.button.x, event.button.y) == 6)
+                if (constructionTuyau(&l_tuyau, &map,
+                                      event.button.x, event.button.y) == 6)
                     status = 0;
 
                 break;
@@ -149,8 +155,9 @@ int main()
             affiche = 1;
             tick = 0;
         }
+
         affichemenu(renderer, begin, font1, status);
-        dessin_arriere_plan(carte, renderer, tableau_minerai);
+        dessin_arriere_plan(map->vierge, renderer, tableau_minerai);
         dessin_tuyau(l_tuyau, map, tableau_minerai, renderer);
 
         if (affiche)

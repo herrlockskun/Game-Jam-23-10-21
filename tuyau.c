@@ -90,7 +90,6 @@ int initListeTuyau(listeTuyau_t **l_tuyau)
 }
 
 /****************************************************/
-/*                                                  */
 /*  Construction tuyau                              */
 /* 1-selection batiment                             */
 /* 2-placer case adjacente batiment                 */
