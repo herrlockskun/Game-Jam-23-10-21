@@ -93,11 +93,11 @@ int r_numero_texture(int num_tuyau)
 {
 	int numero_texture;
 	if (num_tuyau == 0)
-		numero_texture = 3;
+		numero_texture = caseNonOrientee;
 	else if (num_tuyau == 1 || num_tuyau == 4 || num_tuyau == 7 || num_tuyau == 10)
-		numero_texture = 1;
+		numero_texture = tuyauVertical;
 	else
-		numero_texture = 2;
+		numero_texture = tuyauVirage;
 	return numero_texture;
 }
 
@@ -194,19 +194,19 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 
 			if (x + 1 < TAILLE_MAP && map->tuyau[y][x + 1] == NULL)
 			{
-				dessin_texture(x + 1, y, 4, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x + 1, y, caseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (x - 1 >= 0 && map->tuyau[y][x - 1] == NULL)
 			{
-				dessin_texture(x - 1, y, 4, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x - 1, y, caseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (y + 1 < TAILLE_MAP && map->tuyau[y + 1][x] == NULL)
 			{
-				dessin_texture(x, y + 1, 4, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x, y + 1, caseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (y - 1 >= 0 && map->tuyau[y - 1][x] == NULL)
 			{
-				dessin_texture(x, y - 1, 4, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x, y - 1, caseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 		}
 	}

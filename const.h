@@ -2,17 +2,23 @@
 #define CONST_H
 
 /*** PATH ***/
+#define MAX_TEXTURE 25
+
 #define PATH_BOUTON_CONSTRUCTION_TUYAU "./images/bouton.png"
 #define PATH_BOUTON_CONSTRUCTION_USINE "./images/bouton.png"
 
 #define PATH_BACKGROUND_MENU "./images/cosmos.jpeg"
 
-#define PATH_BACKGROUND "./images/lune.jpg"
+#define PATH_BACKGROUND "./images/lune.jpg" // sol de base, plus untilise
 #define PATH_TUYAU_HORIZONTAL
 #define PATH_TUYAU_VERTICAL "./images/vertical.png"
 #define PATH_TUYAU_VIRAGE "./images/virage_2.png"
 #define PATH_TUYAU_AUCUNE_ORIENTATION "./images/tuyau_aucune_orientation.png"
 #define PATH_CASE_SURLIGNEE "./images/case_surlignee.png"
+
+// Sol
+#define PATH_SOL_BASE "./images/voxel-pack/PNG/Tiles/stone.png"
+#define PATH_FOUR "./images/voxel-pack/PNG/Tiles/oven.png"
 
 #define PATH_FONT "./font/arial.ttf"
 

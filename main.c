@@ -71,8 +71,8 @@ int main()
     // tableau_matiere[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
 
     /*Charge les textures*/
-    SDL_Texture **tableau_matiere = malloc(25 * sizeof(SDL_Texture *));
-    tableau_matiere[0] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone.png", renderer);
+    SDL_Texture **tableau_matiere = malloc(MAX_TEXTURE * sizeof(SDL_Texture *));
+
     tableau_matiere[1] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_browniron.png", renderer);
     tableau_matiere[2] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_silver.png", renderer);
     tableau_matiere[3] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_coal.png", renderer);
@@ -88,9 +88,13 @@ int main()
     tableau_matiere[13] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left.png", renderer);
     tableau_matiere[14] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_bot.png", renderer);
     tableau_matiere[15] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
-    tableau_matiere[16] = load_texture_from_image("./images/horizontale.png", renderer);
-    tableau_matiere[17] = load_texture_from_image("./images/virage_2.png", renderer);
-    tableau_matiere[18] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/oven.png", renderer);
+
+    tableau_matiere[four] = load_texture_from_image(PATH_FOUR, renderer);
+    tableau_matiere[tuyauVertical] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
+    tableau_matiere[tuyauVirage] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
+    tableau_matiere[solBase] = load_texture_from_image(PATH_SOL_BASE, renderer);
+    tableau_matiere[caseSurgligne] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
+    tableau_matiere[caseNonOrientee] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
 
     SDL_Texture *fond = dessin_arriere_plan(renderer, tableau_matiere);
 
@@ -193,7 +197,7 @@ int main()
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    for (int i = 0; i < 19; i++)
+    for (int i = 0; i < MAX_TEXTURE; i++)
         SDL_DestroyTexture(tableau_matiere[i]);
     SDL_DestroyTexture(fond);
     free(tableau_matiere);
