@@ -101,9 +101,44 @@ int r_numero_texture(int num_tuyau)
 	return numero_texture;
 }
 
-void dessin_arriere_plan(int carte[20][20], SDL_Renderer *renderer, SDL_Texture **tableau_minerai)
+SDL_Texture *dessin_arriere_plan(SDL_Renderer *renderer, SDL_Texture **tableau_minerai)
 {
-	//peut être farie une génération aléatopire plsu tard
+	//dessin de la carte au hasard sans cluster
+	/*for (int j = 0; j < 20; ++j)
+    {
+        for (int i = 0; i < 20; ++i)
+        {
+            carte[i][j] = ((hasard < 910) && (hasard >= 850)) + ((hasard < 960) && (hasard >= 910)) * 2 + ((hasard < 980) && (hasard >= 960)) * 3 + ((hasard < 995) && (hasard >= 980)) * 4 + ((hasard < 1000) && (hasard >= 995)) * 5;
+			printf("La case %d %d aura la texture : %d\n", i, j, carte[i][j]);
+			printf("Le nombre au hasard est : %d\n", hasard);
+			hasard = rand() % 1000;
+        }
+    }*/
+	SDL_Texture *fond = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1200, 900);
+	SDL_SetRenderTarget(renderer, fond);
+
+	// Carte a remplacer par map->vierge !!!!
+	int carte[20][20] = {{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 1, 1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+						 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 7, 13, 9, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 11, 15, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+						 {0, 0, 0, 8, 12, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
 	for (int j = 0; j < 20; ++j)
 	{
 		for (int i = 0; i < 20; ++i)
@@ -111,6 +146,8 @@ void dessin_arriere_plan(int carte[20][20], SDL_Renderer *renderer, SDL_Texture 
 			dessin_texture(i, j, carte[i][j], tableau_minerai, renderer, 0, SDL_FLIP_NONE);
 		}
 	}
+	SDL_SetRenderTarget(renderer, NULL);
+	return fond;
 }
 
 void dessin_tuyau(listeTuyau_t *tuyau_l,
@@ -171,6 +208,18 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 			{
 				dessin_texture(x, y - 1, 4, tableau_minerai, renderer, 0, miroir);
 			}
+		}
+	}
+}
+
+void dessin_bat(batiment_io_t *carte_bat[20][20], SDL_Renderer *renderer, SDL_Texture **tableau_texture)
+{
+	for (int j = 0; j < 20; ++j)
+	{
+		for (int i = 0; i < 20; ++i)
+		{
+			if (carte_bat[i][j] != NULL)
+				dessin_texture(j, i, carte_bat[i][j]->type + 18, tableau_texture, renderer, 0, SDL_FLIP_NONE);
 		}
 	}
 }

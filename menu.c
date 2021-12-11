@@ -31,8 +31,8 @@ void dessinargent(SDL_Renderer *renderer, TTF_Font *font1, int money, SDL_Textur
 
     //mise en place du fond de la partie menu
     destination.x = OFFSETX;
-    destination.w = 300;
-    destination.h = 900;
+    destination.w = LARGEUR_MENU;
+    destination.h = HAUTEUR_FENETRE;
     destination.y = 0;
     SDL_RenderCopy(renderer, bg[0], NULL, &destination);
 
@@ -89,10 +89,13 @@ void editiontuyaux(SDL_Renderer *renderer, TTF_Font *font1)
     SDL_Color couleur = {100, 100, 100, 255};
     surf = TTF_RenderText_Blended(font1, tuto1, couleur);
     ttuto1 = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
     surf = TTF_RenderText_Blended(font1, tuto2, couleur);
     ttuto2 = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
     surf = TTF_RenderText_Blended(font1, tuto3, couleur);
     ttuto3 = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
 
     destination.x = OFFSETX + 10;
     destination.w = 280;
@@ -106,6 +109,7 @@ void editiontuyaux(SDL_Renderer *renderer, TTF_Font *font1)
 
     surf = TTF_RenderText_Blended(font1, annulation, couleur);
     tannulation = SDL_CreateTextureFromSurface(renderer, surf);
+    SDL_FreeSurface(surf);
     surf = TTF_RenderText_Blended(font1, annul, couleur);
     tannul = SDL_CreateTextureFromSurface(renderer, surf);
     SDL_FreeSurface(surf);
@@ -182,6 +186,7 @@ void constructbat(SDL_Renderer *renderer, TTF_Font *font1, int type) //type 0 : 
             strcat(prix, "$");
             surf = TTF_RenderText_Blended(font1, prix, couleur);
             text = SDL_CreateTextureFromSurface(renderer, surf);
+            SDL_FreeSurface(surf);
             destination.x = OFFSETX + 10 + 100 * j;
             destination.w = (int)80.0 * ((float)strlen(prix) / 7);
             destination.h = 40;
@@ -190,7 +195,7 @@ void constructbat(SDL_Renderer *renderer, TTF_Font *font1, int type) //type 0 : 
         }
     }
     SDL_DestroyTexture(text);
-    SDL_FreeSurface(surf);
+    // SDL_FreeSurface(surf); // Deja free dans le for
 }
 
 void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, int status)
@@ -215,6 +220,7 @@ void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, int status)
     SDL_DestroyTexture(bg[1]);
 }
 
+/* Deplacement dans fichier event.c -> eventsec
 void eventmenu(int posx, int posy, int *status)
 {
     if (posy > 750 && posy < 830)
@@ -233,3 +239,4 @@ void eventmenu(int posx, int posy, int *status)
         }
     }
 }
+*/

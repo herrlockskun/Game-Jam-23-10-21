@@ -34,6 +34,15 @@ enum TuyauOrientation
     droite_bas         // 12 ( 1, 1)
 };
 
+// Permet de retrouver plus facilement la texture dans le tableau sans se soucier de l'indice
+enum TextureIndice
+{
+    tuyau_horizontale,
+    tuyau_virage,
+    stone
+
+};
+
 /*****************************************************/
 /*La structure de batiment contient :                */
 /*   - sa position                                   */

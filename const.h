@@ -48,6 +48,7 @@
 #include "tuyau.h"
 #include "background.h"
 #include "menu.h"
+#include "event.h"
 #include "map.h"
 
 #endif

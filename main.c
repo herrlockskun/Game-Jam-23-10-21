@@ -62,15 +62,37 @@ int main()
     //     }
     // }
 
-    /*** Charge les textures ***/
-    SDL_Texture **tableau_minerai = malloc(10 * sizeof(SDL_Texture *));
-    tableau_minerai[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
-    tableau_minerai[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
-    tableau_minerai[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
-    tableau_minerai[3] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
-    tableau_minerai[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
+    // /*** Charge les textures ***/
+    // SDL_Texture **tableau_matiere = malloc(10 * sizeof(SDL_Texture *));
+    // tableau_matiere[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
+    // tableau_matiere[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
+    // tableau_matiere[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
+    // tableau_matiere[3] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
+    // tableau_matiere[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
 
-    // SDL_Texture* fond=dessin_arriere_plan(renderer, tableau_matiere);
+    /*Charge les textures*/
+    SDL_Texture **tableau_matiere = malloc(25 * sizeof(SDL_Texture *));
+    tableau_matiere[0] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone.png", renderer);
+    tableau_matiere[1] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_browniron.png", renderer);
+    tableau_matiere[2] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_silver.png", renderer);
+    tableau_matiere[3] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_coal.png", renderer);
+    tableau_matiere[4] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_gold.png", renderer);
+    tableau_matiere[5] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_iron.png", renderer);
+    tableau_matiere[6] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
+    tableau_matiere[7] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left_top.png", renderer);
+    tableau_matiere[8] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right_top.png", renderer);
+    tableau_matiere[9] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left_bot.png", renderer);
+    tableau_matiere[10] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right_bot.png", renderer);
+    tableau_matiere[11] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_top.png", renderer);
+    tableau_matiere[12] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right.png", renderer);
+    tableau_matiere[13] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left.png", renderer);
+    tableau_matiere[14] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_bot.png", renderer);
+    tableau_matiere[15] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
+    tableau_matiere[16] = load_texture_from_image("./images/horizontale.png", renderer);
+    tableau_matiere[17] = load_texture_from_image("./images/virage_2.png", renderer);
+    tableau_matiere[18] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/oven.png", renderer);
+
+    SDL_Texture *fond = dessin_arriere_plan(renderer, tableau_matiere);
 
     /***  code en dur a l'arache ***/
     map_t *map = NULL;
@@ -129,13 +151,11 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                if (event.button.x > 900)
-                {
-                    eventmenu(event.button.x, event.button.y, &status);
-                }
-                if (constructionTuyau(&l_tuyau, &map,
-                                      event.button.x, event.button.y) == 6)
-                    status = 0;
+                mainevent(event.button.x, event.button.y, &status, &money, map->batiment);
+                affiche = 1;
+                // if (constructionTuyau(&l_tuyau, &map,
+                //                       event.button.x, event.button.y) == 6)
+                //     status = 0;
 
                 break;
             case SDL_QUIT:
@@ -157,17 +177,26 @@ int main()
         }
 
         affichemenu(renderer, begin, font1, status);
-        dessin_arriere_plan(map->vierge, renderer, tableau_minerai);
-        dessin_tuyau(l_tuyau, map, tableau_minerai, renderer);
+        // dessin_arriere_plan(map->vierge, renderer, tableau_matiere);
+        dessin_arriere_plan(renderer, tableau_matiere);
+        dessin_tuyau(l_tuyau, map, tableau_matiere, renderer);
 
         if (affiche)
         {
+            SDL_RenderCopy(renderer, fond, NULL, NULL);
+            affichemenu(renderer, money, font1, status);
+            dessin_bat(map->batiment, renderer, tableau_matiere);
+            affiche = 0;
             SDL_RenderPresent(renderer);
         }
         SDL_Delay(10);
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    for (int i = 0; i < 19; i++)
+        SDL_DestroyTexture(tableau_matiere[i]);
+    SDL_DestroyTexture(fond);
+    free(tableau_matiere);
     TTF_CloseFont(font1);
     TTF_Quit();
     SDL_Quit();
