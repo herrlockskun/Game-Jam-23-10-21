@@ -6,17 +6,18 @@
 enum CaseMap
 {
     sol,
-    mineraiTitane,
-    mineraiFer,
+    mineTitane,
+    mineFer,
+    mineOr,
     montagne
 };
 
 enum Ressource
 {
     aucuneRessource,
-    titane,
-    fer,
-    eau
+    mineraiTitane,
+    mineraiFer,
+    mineraiOr
 };
 
 enum TuyauOrientation
