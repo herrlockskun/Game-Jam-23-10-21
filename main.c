@@ -51,17 +51,6 @@ int main()
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
     }
 
-    /*** Initialisation de la carte ***/
-    // int carte[20][20];
-
-    // for (int j = 0; j < 20; ++j)
-    // {
-    //     for (int i = 0; i < 20; ++i)
-    //     {
-    //         carte[i][j] = 0;
-    //     }
-    // }
-
     /*Charge les textures*/
     SDL_Texture **tableau_texture_jeu = malloc(MAX_TEXTURE * sizeof(SDL_Texture *));
 

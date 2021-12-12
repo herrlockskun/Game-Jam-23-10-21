@@ -6,6 +6,8 @@
 enum CaseMap
 {
     sol,
+    mineraiTitane,
+    mineraiFer,
     montagne
 };
 
@@ -89,7 +91,7 @@ typedef struct listeTuyau
 {
     struct tuyau *liste[NB_MAX_TUYAU];
     int taille;
-    struct tuyau ** tuyau_select;
+    struct tuyau **tuyau_select;
 
 } listeTuyau_t;
 
@@ -112,7 +114,7 @@ typedef struct tuyau
 
 typedef struct map
 {
-    int vierge[TAILLE_MAP][TAILLE_MAP];
+    enum CaseMap vierge[TAILLE_MAP][TAILLE_MAP];
     batiment_io_t *batiment[TAILLE_MAP][TAILLE_MAP];
     struct tuyau **tuyau[TAILLE_MAP][TAILLE_MAP];
 

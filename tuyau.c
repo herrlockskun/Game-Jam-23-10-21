@@ -160,8 +160,9 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
             x_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][0];
             y_case_prec = tuyau->lien_contenu_case[tuyau->taille - 1][1];
             erreur = checkCaseAdjacente(*p_map, x_case_souris, y_case_souris, x_case_prec, y_case_prec);
-            if (erreur == 4) // Case souris -> batiment
-            {                // Selectionne le dernier batiment
+            if (erreur == 4 &&                                                     // Case souris -> batiment
+                tuyau->entree != (*p_map)->batiment[y_case_souris][x_case_souris]) // Bat != bat entree
+            {                                                                      // Selectionne le dernier batiment
                 tuyau->sortie = (*p_map)->batiment[y_case_souris][x_case_souris];
                 erreur = 6; // 6 - Batiment sortie bien selectione
                 // Chemin de tuyau connecte
@@ -221,13 +222,13 @@ int checkCaseAdjacente(map_t *map, int x_case_souris, int y_case_souris, int x_c
         {
             if (map->tuyau[y_case_souris][x_case_souris] == NULL) // Pas de tuyau
             {
-                if (map->vierge[y_case_souris][x_case_souris] == sol) // Pas de montagne -> sol
+                if (map->vierge[y_case_souris][x_case_souris] != montagne) // Pas de montagne -> sol
                 {
                     erreur = 0; // Case souris -> sol
                 }
                 else
                 {
-                    erreur = 2; // Case souris -> pas sol
+                    erreur = 2; // Case souris -> pas sol ou case posable
                 }
             }
             else
@@ -462,7 +463,6 @@ int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t *map, int x_souris, int y_
 int suppressionTotalTuyau(listeTuyau_t **p_l_tuyau, map_t *map)
 {
     int erreur = 1; // Tuyau pas encore construit -> level = 0
-
 
     while ((*p_l_tuyau)->tuyau_select != NULL)
     {
