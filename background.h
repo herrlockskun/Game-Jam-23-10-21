@@ -20,4 +20,6 @@ void dessin_tuyau(struct listeTuyau *tuyau_l, map_t *map,
 void dessin_bat(batiment_io_t *carte_batiment[20][20],
                 SDL_Renderer *renderer, SDL_Texture **tableau_texture);
 
+void charger_texture_jeu(SDL_Texture **tableau_texture,
+                         SDL_Renderer *renderer);
 #endif

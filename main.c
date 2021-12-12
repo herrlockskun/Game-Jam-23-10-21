@@ -62,41 +62,12 @@ int main()
     //     }
     // }
 
-    // /*** Charge les textures ***/
-    // SDL_Texture **tableau_matiere = malloc(10 * sizeof(SDL_Texture *));
-    // tableau_matiere[0] = load_texture_from_image(PATH_BACKGROUND, renderer);
-    // tableau_matiere[1] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
-    // tableau_matiere[2] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
-    // tableau_matiere[3] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
-    // tableau_matiere[4] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
-
     /*Charge les textures*/
-    SDL_Texture **tableau_matiere = malloc(MAX_TEXTURE * sizeof(SDL_Texture *));
+    SDL_Texture **tableau_texture_jeu = malloc(MAX_TEXTURE * sizeof(SDL_Texture *));
 
-    tableau_matiere[1] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_browniron.png", renderer);
-    tableau_matiere[2] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_silver.png", renderer);
-    tableau_matiere[3] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_coal.png", renderer);
-    tableau_matiere[4] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_gold.png", renderer);
-    tableau_matiere[5] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/stone_iron.png", renderer);
-    tableau_matiere[6] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
-    tableau_matiere[7] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left_top.png", renderer);
-    tableau_matiere[8] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right_top.png", renderer);
-    tableau_matiere[9] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left_bot.png", renderer);
-    tableau_matiere[10] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right_bot.png", renderer);
-    tableau_matiere[11] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_top.png", renderer);
-    tableau_matiere[12] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_right.png", renderer);
-    tableau_matiere[13] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_left.png", renderer);
-    tableau_matiere[14] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_bot.png", renderer);
-    tableau_matiere[15] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
+    charger_texture_jeu(tableau_texture_jeu, renderer);
 
-    tableau_matiere[four] = load_texture_from_image(PATH_FOUR, renderer);
-    tableau_matiere[tuyauVertical] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
-    tableau_matiere[tuyauVirage] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
-    tableau_matiere[solBase] = load_texture_from_image(PATH_SOL_BASE, renderer);
-    tableau_matiere[caseSurgligne] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
-    tableau_matiere[caseNonOrientee] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
-
-    SDL_Texture *fond = dessin_arriere_plan(renderer, tableau_matiere);
+    SDL_Texture *fond = dessin_arriere_plan(renderer, tableau_texture_jeu);
 
     /***  code en dur a l'arache ***/
     map_t *map = NULL;
@@ -180,16 +151,19 @@ int main()
         }
 
         affichemenu(renderer, begin, font1, status);
-        // dessin_arriere_plan(map->vierge, renderer, tableau_matiere);
-        dessin_arriere_plan(renderer, tableau_matiere);
-        dessin_tuyau(l_tuyau, map, tableau_matiere, renderer);
+        // dessin_arriere_plan(map->vierge, renderer, tableau_texture_jeu);
+        dessin_arriere_plan(renderer, tableau_texture_jeu);
+        dessin_tuyau(l_tuyau, map, tableau_texture_jeu, renderer);
 
         if (affiche)
         {
             SDL_RenderCopy(renderer, fond, NULL, NULL);
             affichemenu(renderer, money, font1, status);
-            dessin_bat(map->batiment, renderer, tableau_matiere);
-            dessin_tuyau(l_tuyau, map, tableau_matiere, renderer);
+            dessin_bat(map->batiment, renderer,
+                       tableau_texture_jeu);
+            dessin_tuyau(l_tuyau, map,
+                         tableau_texture_jeu,
+                         renderer);
             affiche = 0;
             SDL_RenderPresent(renderer);
         }
@@ -198,9 +172,9 @@ int main()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     for (int i = 0; i < MAX_TEXTURE; i++)
-        SDL_DestroyTexture(tableau_matiere[i]);
+        SDL_DestroyTexture(tableau_texture_jeu[i]);
     // printf("ici\n");
-    free(tableau_matiere);
+    free(tableau_texture_jeu);
     SDL_DestroyTexture(fond);
     TTF_CloseFont(font1);
     TTF_Quit();
