@@ -55,10 +55,12 @@ void mainevent(int posx, int posy, enum EtatJeu *status, int *money,
             if (posy > 480 && posy < 560)
             {
                 //annulation du dernier posé
+                annulerConstructionTuyauUnite(p_l_tuyau, *p_map);
             }
             if (posy > 600 && posy < 680)
             {
                 //annulation de toute la construction
+                suppressionTotalTuyau(p_l_tuyau, *p_map);
                 *status = etatClassique;
             }
         }

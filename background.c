@@ -156,7 +156,9 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 				  SDL_Renderer *renderer)
 {
 	int nb_tuyau = tuyau_l->taille;
-	int num_tuyau, x, y, angle, numero_texture, taille;
+	int num_tuyau, angle, numero_texture, taille;
+	int x = 0;
+	int y = 0;
 	SDL_RendererFlip miroir;
 	for (int j = 0; j < nb_tuyau; j++)
 	{
@@ -184,9 +186,10 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 		// printf("\n\n\n\n\n\n");
 
 		/*** dessin case surlignee autour de la case selectionnee ***/
-		if (tuyau_l->liste[j]->level == 0)
-		{
-			if (tuyau_l->liste[j]->taille == 0 && tuyau_l->liste[j]->entree != NULL)
+		if (tuyau_l->liste[j]->level == 0 && tuyau_l->liste[j]->entree != NULL)
+		{	// level = 0 -> pas fini de construire
+			// entre != null si ya un batiment de pose
+			if (tuyau_l->liste[j]->taille == 0)
 			{ // Pas de bout de tuyau mais un batiment entree selectionne
 				x = tuyau_l->liste[j]->entree->pos_x;
 				y = tuyau_l->liste[j]->entree->pos_y;

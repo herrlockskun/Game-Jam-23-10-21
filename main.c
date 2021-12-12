@@ -135,15 +135,24 @@ int main()
             case SDL_QUIT:
                 running = 0;
                 break;
+            default:
+                break;
             }
-            break;
         }
         end = clock();
-        if (((end - begin) * 1000 / CLOCKS_PER_SEC) > 100) //1 tick = 100ms
+        if (((end - begin) * 1000 / CLOCKS_PER_SEC) > 100) // 1 tick = 100ms
         {
             tick = 1;
             begin = clock();
         }
+
+        // if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
+        // {
+        //     tick = 1;
+        //     timeout = SDL_GetTicks() + 50;
+        //     // begin = clock();
+        // }
+
         if (tick)
         {
             affiche = 1;

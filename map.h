@@ -89,6 +89,8 @@ typedef struct listeTuyau
 {
     struct tuyau *liste[NB_MAX_TUYAU];
     int taille;
+    struct tuyau ** tuyau_select;
+
 } listeTuyau_t;
 
 typedef struct tuyau
