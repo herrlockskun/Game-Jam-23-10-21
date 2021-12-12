@@ -40,14 +40,14 @@ enum TuyauOrientation
 // Permet de retrouver plus facilement la texture dans le tableau sans se soucier de l'indice
 enum TextureIndice
 {
-    solBase = 0,
-    tuyauVertical = 16,
-    // tuyauHorizontale, // Inutilise
-    tuyauVirage = 17,
-    caseSurgligne = 20,
-    caseNonOrientee = 19,
-    four = 18,
-    mineraiOr
+    indTextSolBase = 0,
+    indTextTuyauVertical = 16,
+    // ItuyauHorizontale, // Inutilise
+    indTextTuyauVirage = 17,
+    indTextCaseSurgligne = 20,
+    indTextCaseNonOrientee = 19,
+    indTextFour = 18,
+    indTextMineraiOr
 
 };
 

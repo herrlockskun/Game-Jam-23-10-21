@@ -56,7 +56,8 @@ int main()
 
     charger_texture_jeu(tableau_texture_jeu, renderer);
 
-    SDL_Texture *fond = dessin_arriere_plan(renderer, tableau_texture_jeu);
+    SDL_Texture *fond = dessin_arriere_plan(renderer,
+                                            tableau_texture_jeu);
 
     /***  code en dur a l'arache ***/
     map_t *map = NULL;
@@ -135,13 +136,6 @@ int main()
             begin = clock();
         }
 
-        // if(SDL_TICKS_PASSED(SDL_GetTicks(), timeout))
-        // {
-        //     tick = 1;
-        //     timeout = SDL_GetTicks() + 50;
-        //     // begin = clock();
-        // }
-
         if (tick)
         {
             affiche = 1;
@@ -149,9 +143,6 @@ int main()
         }
 
         affichemenu(renderer, begin, font1, status);
-        // dessin_arriere_plan(map->vierge, renderer, tableau_texture_jeu);
-        dessin_arriere_plan(renderer, tableau_texture_jeu);
-        dessin_tuyau(l_tuyau, map, tableau_texture_jeu, renderer);
 
         if (affiche)
         {

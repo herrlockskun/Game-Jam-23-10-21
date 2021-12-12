@@ -134,6 +134,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
                 if ((*p_map)->batiment[y_case_souris][x_case_souris] != NULL)
                 { // Lien du tuyau d'entre avec la sortie
                     tuyau->entree = (*p_map)->batiment[y_case_souris][x_case_souris];
+
                     erreur = 5; // Batiment bien selectionne
                 }
                 else
@@ -142,7 +143,7 @@ int constructionTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map, int x_souris, int
                 }
             }
             else // Batiment entree deja selectionne
-            {    // Doit placer un tuyau
+            {    // Doit placer un tuyau premier
                 // Check case adjacente
                 x_case_prec = tuyau->entree->pos_x;
                 y_case_prec = tuyau->entree->pos_y;
@@ -295,7 +296,7 @@ int initTuyau(listeTuyau_t **l_tuyau)
 /*                                                 */
 /* erreur : 0 - Bizarre ne devrait pas rester a 0  */
 /*          1 - Batiment entree bien deco (succes) */
-/*          2 - Batiment entree pas deco (echec)   */
+/*          2 - Batiment entree pas deco (...)     */
 /*          3 - Pas de batiment entree a deco      */
 /*          4 - Derniere unite tuyau bien supp     */
 /*          5 - Batiment sortie bien deco (succes) */
@@ -304,7 +305,7 @@ int initTuyau(listeTuyau_t **l_tuyau)
 /*                                                 */
 /* sortie : erreur = 1 -> unite+entree supprime    */
 /***************************************************/
-int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
+int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t **p_map)
 {
     int erreur = 0;
 
@@ -326,19 +327,21 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
                 erreur = deleteDoor(tuyau_select->entree, tuyau_select->cote_entree);
                 if (erreur == 0)
                 {
-                    tuyau_select->entree = NULL; // Supprime la connexion avec bat
-                    erreur = 1;                  // Batiment entree correctement deconnecte
-                    /* a supp dans la liste des tuyau */
-                    suppressionTuyau(p_l_tuyau); // semble ok, mais suppression avec reoganisation de la liste tuyau pas vraiment testee
+                    // tuyau_select->entree = NULL; // Supprime la connexion avec bat
+                    erreur = 1; // Batiment entree correctement deconnecte
                 }
                 else
-                {
-                    erreur = 2; // Bat entree pas deco
+                { // Bat entree pas deco, mais peut etre pas besoin de le deco s il a pas ete co
+
+                    erreur = 2;
                 }
+                /* a supp dans la liste des tuyau */
+                suppressionTuyau(p_l_tuyau); // semble ok, mais suppression avec reoganisation de la liste tuyau pas vraiment testee
             }
             else
-            {
-                erreur = 3; // Pas de batiment entree a deco
+            { // Pas de batiment entree a deco
+                erreur = 3;
+                suppressionTuyau(p_l_tuyau); // semble ok, mais suppression avec reoganisation de la liste tuyau pas vraiment testee
             }
         }
         else
@@ -357,7 +360,7 @@ int annulerConstructionTuyauUnite(listeTuyau_t **p_l_tuyau, map_t *map)
             tuyau_select->taille = taille_tuyau; // affecte la taille decremente du tuyau
 
             // Effacement de la derniere unite de tuyau dans la map
-            map->tuyau[y_unite][x_unite] = NULL;
+            (*p_map)->tuyau[y_unite][x_unite] = NULL;
 
             erreur = 4;
         }
@@ -407,7 +410,7 @@ int suppressionTuyau(listeTuyau_t **p_l_tuyau)
 
     /*** Test si le tuyau a supprimer n'est pas le dernier de la liste ***/
     /*** Adresse pointee par select est diff de adresse case de la liste contenant le dernier tuyau ***/
-    if (&(*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1] != (*p_l_tuyau)->tuyau_select)
+    if (&((*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1]) != (*p_l_tuyau)->tuyau_select)
     { // Pas le dernier de la liste
         // Il faut copier le dernier a sa place
         *(*p_l_tuyau)->tuyau_select = (*p_l_tuyau)->liste[(*p_l_tuyau)->taille - 1];
@@ -460,13 +463,13 @@ int selectionTuyauMap(listeTuyau_t **p_l_tuyau, map_t *map, int x_souris, int y_
 /* erreur : 0 -            */
 /*          1 -         */
 /***************************************************/
-int suppressionTotalTuyau(listeTuyau_t **p_l_tuyau, map_t *map)
+int suppressionTotalTuyau(listeTuyau_t **p_l_tuyau, map_t **p_map)
 {
     int erreur = 1; // Tuyau pas encore construit -> level = 0
 
     while ((*p_l_tuyau)->tuyau_select != NULL)
     {
-        annulerConstructionTuyauUnite(p_l_tuyau, map);
+        annulerConstructionTuyauUnite(p_l_tuyau, p_map);
     }
     return erreur;
 }
@@ -571,16 +574,35 @@ int orientation_tuyau(tuyau_t **p_tuyau)
     return erreur;
 }
 
+/***************************************************/
+/* decalage_l_tuyau : applique le decalage des     */
+/*                    des ressources dans tous     */
+/*                    les tuyaux                   */
+/*                                                 */
+/* entree : liste de tuyau                         */
+/*                                                 */
+/* sortie : rien                 */
+/***************************************************/
+void decalage_l_tuyau(listeTuyau_t *l_tuyau)
+{
+    for (int i = 0; i < l_tuyau->taille; i++)
+    {
+        decale_dans_tuyau(l_tuyau->liste[i]);
+    }
+}
+
 int decale_dans_tuyau(tuyau_t *tuyau)
 {
     int erreur = 0;
 
     // Test d'insertion d'une matière dans l'usine alors on dit qu'il n'y a plus de ressources dans la case sinon on ne peut décaler la dernière case
-    /*if (insertion_dans_usine(tuyau->sortie))
+    // if (tuyau->contenu[tuyau->taille - 1] != aucuneRessource && stockEntreePlein(tuyau->sortie))
+    if (tuyau->contenu[tuyau->taille - 1] != aucuneRessource && 1)
     {
-        ajout_stock_usine(tuyau->contenu[tuyau->taille-1]);
-        tuyau->contenu[tuyau->taille-1] = aucuneRessource;
-    }*/
+        // Fonction n existe pas
+        // ajout_stock_usine(tuyau->contenu[tuyau->taille - 1]);
+        tuyau->contenu[tuyau->taille - 1] = aucuneRessource;
+    }
 
     if (tuyau->nb_passage % (5 - tuyau->level) == 0)
     {

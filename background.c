@@ -93,11 +93,11 @@ int r_numero_texture(int num_tuyau)
 {
 	int numero_texture;
 	if (num_tuyau == 0)
-		numero_texture = caseNonOrientee;
+		numero_texture = indTextCaseNonOrientee;
 	else if (num_tuyau == 1 || num_tuyau == 4 || num_tuyau == 7 || num_tuyau == 10)
-		numero_texture = tuyauVertical;
+		numero_texture = indTextTuyauVertical;
 	else
-		numero_texture = tuyauVirage;
+		numero_texture = indTextTuyauVirage;
 	return numero_texture;
 }
 
@@ -187,7 +187,7 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 
 		/*** dessin case surlignee autour de la case selectionnee ***/
 		if (tuyau_l->liste[j]->level == 0 && tuyau_l->liste[j]->entree != NULL)
-		{	// level = 0 -> pas fini de construire
+		{ // level = 0 -> pas fini de construire
 			// entre != null si ya un batiment de pose
 			if (tuyau_l->liste[j]->taille == 0)
 			{ // Pas de bout de tuyau mais un batiment entree selectionne
@@ -197,19 +197,19 @@ void dessin_tuyau(listeTuyau_t *tuyau_l,
 
 			if (x + 1 < TAILLE_MAP && map->tuyau[y][x + 1] == NULL)
 			{
-				dessin_texture(x + 1, y, caseSurgligne, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x + 1, y, indTextCaseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (x - 1 >= 0 && map->tuyau[y][x - 1] == NULL)
 			{
-				dessin_texture(x - 1, y, caseSurgligne, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x - 1, y, indTextCaseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (y + 1 < TAILLE_MAP && map->tuyau[y + 1][x] == NULL)
 			{
-				dessin_texture(x, y + 1, caseSurgligne, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x, y + 1, indTextCaseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 			if (y - 1 >= 0 && map->tuyau[y - 1][x] == NULL)
 			{
-				dessin_texture(x, y - 1, caseSurgligne, tableau_minerai, renderer, 0, miroir);
+				dessin_texture(x, y - 1, indTextCaseSurgligne, tableau_minerai, renderer, 0, miroir);
 			}
 		}
 	}
@@ -255,10 +255,10 @@ void charger_texture_jeu(SDL_Texture **tableau_texture,
 	tableau_texture[14] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone_bot.png", renderer);
 	tableau_texture[15] = load_texture_from_image("./images/voxel-pack/PNG/Tiles/greystone.png", renderer);
 
-	tableau_texture[four] = load_texture_from_image(PATH_FOUR, renderer);
-	tableau_texture[tuyauVertical] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
-	tableau_texture[tuyauVirage] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
-	tableau_texture[solBase] = load_texture_from_image(PATH_SOL_BASE, renderer);
-	tableau_texture[caseSurgligne] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
-	tableau_texture[caseNonOrientee] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
+	tableau_texture[indTextFour] = load_texture_from_image(PATH_FOUR, renderer);
+	tableau_texture[indTextTuyauVertical] = load_texture_from_image(PATH_TUYAU_VERTICAL, renderer);
+	tableau_texture[indTextTuyauVirage] = load_texture_from_image(PATH_TUYAU_VIRAGE, renderer);
+	tableau_texture[indTextSolBase] = load_texture_from_image(PATH_SOL_BASE, renderer);
+	tableau_texture[indTextCaseSurgligne] = load_texture_from_image(PATH_CASE_SURLIGNEE, renderer);
+	tableau_texture[indTextCaseNonOrientee] = load_texture_from_image(PATH_TUYAU_AUCUNE_ORIENTATION, renderer);
 }

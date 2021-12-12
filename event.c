@@ -55,12 +55,16 @@ void mainevent(int posx, int posy, enum EtatJeu *status, int *money,
             if (posy > 480 && posy < 560)
             {
                 //annulation du dernier posé
-                annulerConstructionTuyauUnite(p_l_tuyau, *p_map);
+                int res = annulerConstructionTuyauUnite(p_l_tuyau, p_map);
+                if (res == 1 || res == 2 || res == 3)
+                {
+                    *status = etatClassique;
+                }
             }
             if (posy > 600 && posy < 680)
             {
                 //annulation de toute la construction
-                suppressionTotalTuyau(p_l_tuyau, *p_map);
+                suppressionTotalTuyau(p_l_tuyau, p_map);
                 *status = etatClassique;
             }
         }
@@ -83,7 +87,7 @@ void mainevent(int posx, int posy, enum EtatJeu *status, int *money,
                 if (*money > cout[n])
                 {
                     *money = *money - cout[n];
-                    *status = 10 + n; // Etrange !!!
+                    *status = 10 + n; // bouton batiment
                 }
             }
         }
@@ -110,7 +114,7 @@ void mainevent(int posx, int posy, enum EtatJeu *status, int *money,
                 if (*money > cout[n])
                 {
                     *money = *money - cout[n];
-                    *status = 20 + n; // Etrange !!!!
+                    *status = 20 + n; // bouton batiment
                 }
             }
         }
