@@ -1,11 +1,12 @@
 #include "event.h"
 
-void eventsec(int posx, int posy, int *status)
+void eventsec(int posx, int posy, enum EtatJeu *status,
+              listeTuyau_t **p_l_tuyau)
 {
     if (posx < 900)
     {
         //a faire plus tard
-        *status = 0;
+        *status = etatClassique;
     }
     if (posx > 900)
     {
@@ -13,33 +14,41 @@ void eventsec(int posx, int posy, int *status)
         {
             if (posx > 910 && posx < 990)
             {
-                *status = 1;
+                initTuyau(p_l_tuyau);
+                *status = etatConstructionTuyau;
             }
             if (posx > 1010 && posx < 1090)
             {
-                *status = 2;
+                *status = etatConstructionBat0;
             }
             if (posx > 1110 && posx < 1190)
             {
-                *status = 3;
+                *status = etatConstructionBat1;
             }
         }
     }
 }
 
-void mainevent(int posx, int posy, int *status, int *money, batiment_io_t *carte_bat[20][20])
+void mainevent(int posx, int posy, enum EtatJeu *status, int *money,
+               listeTuyau_t **p_l_tuyau,
+               map_t **p_map)
 {
     int cout[10];
     int n;
     switch (*status)
     {
-    case 0:
-        eventsec(posx, posy, status);
+    case etatClassique:
+        eventsec(posx, posy, status, p_l_tuyau);
         break;
-    case 1:
+    case etatConstructionTuyau:
         if (posx < 900)
         {
             //construction mathieu
+            if (constructionTuyau(p_l_tuyau, p_map,
+                                  posx, posy) == 6)
+            {
+                *status = etatClassique;
+            }
         }
         else
         {
@@ -50,11 +59,11 @@ void mainevent(int posx, int posy, int *status, int *money, batiment_io_t *carte
             if (posy > 600 && posy < 680)
             {
                 //annulation de toute la construction
-                *status = 0;
+                *status = etatClassique;
             }
         }
         break;
-    case 2:
+    case etatConstructionBat0:
         cout[0] = 10;
         cout[1] = 60;
         cout[2] = 200;
@@ -72,16 +81,16 @@ void mainevent(int posx, int posy, int *status, int *money, batiment_io_t *carte
                 if (*money > cout[n])
                 {
                     *money = *money - cout[n];
-                    *status = 10 + n;
+                    *status = 10 + n; // Etrange !!!
                 }
             }
         }
         else
         {
-            eventsec(posx, posy, status);
+            eventsec(posx, posy, status, p_l_tuyau);
         }
         break;
-    case 3:
+    case etatConstructionBat1:
         cout[0] = 50;
         cout[1] = 280;
         cout[2] = 600;
@@ -99,35 +108,35 @@ void mainevent(int posx, int posy, int *status, int *money, batiment_io_t *carte
                 if (*money > cout[n])
                 {
                     *money = *money - cout[n];
-                    *status = 20 + n;
+                    *status = 20 + n; // Etrange !!!!
                 }
             }
         }
         else
         {
-            eventsec(posx, posy, status);
+            eventsec(posx, posy, status, p_l_tuyau);
         }
         break;
     case 10:
         if (posx < 900)
         {
             //appeler construire foreuse
-            *status = 0;
+            *status = etatClassique;
         }
         else
         {
-            eventsec(posx, posy, status);
+            eventsec(posx, posy, status, p_l_tuyau);
         }
         break;
     case 20:
         if (posx < 900)
         {
-            *status = 0;
-            newUsine_brique(carte_bat, posx / 45, posy / 45);
+            *status = etatClassique;
+            newUsine_brique((*p_map)->batiment, posx / 45, posy / 45);
         }
         else
         {
-            eventsec(posx, posy, status);
+            eventsec(posx, posy, status, p_l_tuyau);
         }
         break;
     }

@@ -42,10 +42,19 @@ enum TextureIndice
     // tuyauHorizontale, // Inutilise
     tuyauVirage = 17,
     caseSurgligne = 20,
-    caseNonOrientee = 21,
+    caseNonOrientee = 19,
     four = 18,
     mineraiOr
 
+};
+
+// Permet de savoir l'etat du jeu, du menu
+enum EtatJeu
+{
+    etatClassique = 0,
+    etatConstructionTuyau = 1,
+    etatConstructionBat0 = 2,
+    etatConstructionBat1 = 3
 };
 
 /*****************************************************/

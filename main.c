@@ -105,6 +105,7 @@ int main()
     {
         for (int j = 0; j < TAILLE_MAP; j++)
         {
+            // attention map code en dur dans dessin fond ecran
             map->vierge[i][j] = sol;
             map->batiment[i][j] = NULL;
             map->tuyau[i][j] = NULL;
@@ -124,14 +125,14 @@ int main()
     /*** Creation de la liste des tuyau ***/
     listeTuyau_t *l_tuyau;
     initListeTuyau(&l_tuyau);
-    initTuyau(&l_tuyau); // car on commence en creant un tuyau
+    // initTuyau(&l_tuyau); // car on commence en creant un tuyau
 
     SDL_Event event;
     int tick = 0;
     int affiche = 0;
     clock_t begin, end;
     begin = clock();
-    int status = 1;
+    enum EtatJeu status = etatClassique;
     int money = 5100;
 
     while (running)
@@ -155,11 +156,9 @@ int main()
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                mainevent(event.button.x, event.button.y, &status, &money, map->batiment);
+                mainevent(event.button.x, event.button.y, &status, &money,
+                          &l_tuyau, &map);
                 affiche = 1;
-                // if (constructionTuyau(&l_tuyau, &map,
-                //                       event.button.x, event.button.y) == 6)
-                //     status = 0;
 
                 break;
             case SDL_QUIT:
@@ -190,6 +189,7 @@ int main()
             SDL_RenderCopy(renderer, fond, NULL, NULL);
             affichemenu(renderer, money, font1, status);
             dessin_bat(map->batiment, renderer, tableau_matiere);
+            dessin_tuyau(l_tuyau, map, tableau_matiere, renderer);
             affiche = 0;
             SDL_RenderPresent(renderer);
         }
@@ -199,8 +199,9 @@ int main()
     SDL_DestroyWindow(window);
     for (int i = 0; i < MAX_TEXTURE; i++)
         SDL_DestroyTexture(tableau_matiere[i]);
-    SDL_DestroyTexture(fond);
+    // printf("ici\n");
     free(tableau_matiere);
+    SDL_DestroyTexture(fond);
     TTF_CloseFont(font1);
     TTF_Quit();
     SDL_Quit();

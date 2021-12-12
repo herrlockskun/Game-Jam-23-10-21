@@ -198,21 +198,21 @@ void constructbat(SDL_Renderer *renderer, TTF_Font *font1, int type) //type 0 : 
     // SDL_FreeSurface(surf); // Deja free dans le for
 }
 
-void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, int status)
+void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, enum EtatJeu status)
 {
     SDL_Texture *bg[2];
     bg[0] = load_texture_from_image(PATH_BACKGROUND_MENU, renderer);
     bg[1] = load_texture_from_image(PATH_BOUTON_CONSTRUCTION_TUYAU, renderer);
     dessinargent(renderer, font1, money, bg);
-    if (status == 1)
+    if (status == etatConstructionTuyau)
     {
         editiontuyaux(renderer, font1);
     }
-    if (status == 2)
+    if (status == etatConstructionBat0)
     {
         constructbat(renderer, font1, 0);
     }
-    if (status == 3)
+    if (status == etatConstructionBat1)
     {
         constructbat(renderer, font1, 1);
     }

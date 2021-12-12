@@ -2,7 +2,7 @@
 #define CONST_H
 
 /*** PATH ***/
-#define MAX_TEXTURE 25
+#define MAX_TEXTURE 20
 
 #define PATH_BOUTON_CONSTRUCTION_TUYAU "./images/bouton.png"
 #define PATH_BOUTON_CONSTRUCTION_USINE "./images/bouton.png"
@@ -53,6 +53,7 @@
 
 #include "tuyau.h"
 #include "background.h"
+#include "event.h"
 #include "menu.h"
 #include "event.h"
 #include "map.h"

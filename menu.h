@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <SDL2/SDL_ttf.h>
+
+#include "const.h"
 #include "background.h"
 
 void dessinfond(SDL_Renderer *renderer, SDL_Texture *bg[2], int centre);
@@ -18,6 +20,6 @@ void constructbat(SDL_Renderer *renderer, TTF_Font *font1, int type);
 
 void editiontuyaux(SDL_Renderer *renderer, TTF_Font *font1);
 
-void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, int status);
+void affichemenu(SDL_Renderer *renderer, int money, TTF_Font *font1, enum EtatJeu status);
 
 #endif
