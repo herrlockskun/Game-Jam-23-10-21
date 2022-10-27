@@ -23,7 +23,7 @@ Principe :
 * Relier les batiments entre eux à l'aide de *tuyaux*
 * Relier vendre les ressources à un batiment mère  
     
-> But : collecter le plus de ressources pour les transformer en d'autres ressources ayant plus de valeurs qui seront vendues par la suite.
+> But : collecter le plus de ressources pour les transformer en d'autres ressources ayant plus de valeurs qui seront vendues par la suite.  
 
 ## Librairie :  
 
