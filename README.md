@@ -25,6 +25,6 @@ Principe :
     
 > But : collecter le plus de ressources pour les transformer en d'autres ressources ayant plus de valeurs qui seront vendues par la suite.
 
-# Librairie :
+## Librairie :  
 
-* SDL2 dev (installer avec "apt-get libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-net-dev libsdl2-gfx-dev libsld2-ttf-dev)
+* SDL2 dev (installer avec "apt-get libsdl2-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-net-dev libsdl2-gfx-dev libsld2-ttf-dev)  
