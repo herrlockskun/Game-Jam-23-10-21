@@ -21,11 +21,11 @@ all: $(OBJ)
 
 	
 %.o:%.c
+	@make target
 	$(CC) -c $< -o target/$@ $(CFLAGS)
 
 clean:
 	rm target/*.o 
 
-# target:
-# 	if [ ! -d target ];then mkdir target;echo "Dossier target cree";fi
-# [ ! -d target ] && mkdir target;
+target:
+	if [ ! -d target ];then mkdir target;echo "Dossier target cree";fi
